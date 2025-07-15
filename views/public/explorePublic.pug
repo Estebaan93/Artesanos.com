@@ -14,7 +14,7 @@ block content
         li.portafolio-item
           a(href=`/portafolio/${usuario.id_usuario}`)
             img(
-              src=`/img/perfiles/${usuario.avatarUrl || 'default.png'}`,
+              src=usuario.avatarUrl && usuario.avatarUrl.startsWith('http') ? usuario.avatarUrl : `/img/perfiles/${usuario.avatarUrl || 'default.png'}`,
               alt=`Avatar de ${usuario.nombre} ${usuario.apellido}`,
             )
             | #{usuario.nombre} #{usuario.apellido}
