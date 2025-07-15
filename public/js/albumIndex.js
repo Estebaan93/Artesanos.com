@@ -29,6 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Agregar botón eliminar a cada tarjeta y evento click
   document.querySelectorAll(".album-card").forEach((card) => {
+    const tipoAlbum= card.getAttribute("data-tipo"); 
+    if(tipoAlbum !=="fisico") return; //Solo albumes fisicos (propios)
     const idAlbum = card
       .querySelector("a")
       .getAttribute("href")

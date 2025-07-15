@@ -63,13 +63,53 @@ export const obtenerAlbumPorId = async (id_album) => {
   }
 };
 
+
+/*PROBANDO ELIMINAR JUNTO A IMG*/
 export const eliminarAlbumPorId = async (id_album) => {
+  //Cambia el estado del album
   const [result] = await pool.query(
     "UPDATE album SET estado = 0 WHERE id_album = ?",
     [id_album]
   );
+
+  //Cambiar estado de imágenes de ese álbum
+    await pool.query(
+    "UPDATE imagen SET estado = 0 WHERE id_album = ?",
+    [id_album]
+  );
+
+  // Eliminar comentarios y notificaciones asociadas a las imágenes de ese álbum
+  // 1. Obtener IDs de las imágenes del álbum
+  const [imagenes] = await pool.query(
+    "SELECT id_imagen FROM imagen WHERE id_album = ?",
+    [id_album]
+  );
+  const imagenIds = imagenes.map(img => img.id_imagen);
+  if (imagenIds.length > 0) {
+    // 2. Obtener IDs de los comentarios asociados
+    const [comentarios] = await pool.query(
+      "SELECT id_comentario FROM comentarios WHERE id_imagen IN (?)",
+      [imagenIds]
+    );
+    const comentarioIds = comentarios.map(c => c.id_comentario);
+    if (comentarioIds.length > 0) {
+      // 3. Eliminar notificaciones de esos comentarios
+      await pool.query(
+        "DELETE FROM notificacion_contenido WHERE id_comentario IN (?)",
+        [comentarioIds]
+      );
+      // 4. Eliminar comentarios
+      await pool.query(
+        "DELETE FROM comentarios WHERE id_comentario IN (?)",
+        [comentarioIds]
+      );
+    }
+  }
   return result.affectedRows > 0;
 };
+
+
+
 
 export const buscarAlbumesPorTituloOEtiqueta = async (termino) => {
   const [rows] = await pool.query(
@@ -116,8 +156,15 @@ export const obtenerAlbumesEliminados = async (id_usuario) => {
 };
 
 export const restaurarAlbumPorId = async (id_album) => {
+  // 1. Restaurar álbum
   const [result] = await pool.query(`
     UPDATE album SET estado = 1 WHERE id_album = ?
   `, [id_album]);
+
+  // 2. Restaurar imágenes contenidas en ese álbum
+  await pool.query(
+    "UPDATE imagen SET estado = 1 WHERE id_album = ?",
+    [id_album]
+  );  
   return result.affectedRows > 0;
 };
