@@ -1,0 +1,158 @@
+/* Contenedor principal centrado */
+.reporte-lista {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  margin: 30px auto;
+  max-width: 1200px;
+}
+
+/* Tarjeta de reporte */
+.reporte-card {
+  width: 300px;
+  background: rgba(255, 255, 255, 0.15); /* Fondo blanco traslúcido */
+  border-radius: 12px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(8px); /* Blur para efecto vidriado */
+  -webkit-backdrop-filter: blur(8px); /* Compatibilidad Safari */
+  border: 1px solid rgba(255, 255, 255, 0.18); /* Borde difuminado */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+}
+
+.reporte-card:hover {
+  transform: translateY(-4px);
+}
+
+
+/* Imagen del reporte */
+.reporte-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Contenido de la tarjeta */
+.reporte-card .contenido {
+  padding: 16px 18px 24px; /* padding extra abajo para evitar que el botón se corte */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+/* Título */
+.reporte-card h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #333;
+  font-weight: 600;
+}
+
+/* Texto general */
+.reporte-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #444;
+  line-height: 1.4;
+}
+
+/* Estado del reporte */
+.estado {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.estado.pendiente {
+  color: #e67e22;
+}
+
+.estado.revisado {
+  color: #27ae60;
+}
+
+.estado.descartado {
+  color: #c0392b;
+}
+
+/* Formulario */
+.reporte-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* Select y botón */
+.reporte-card select,
+.reporte-card button {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0.9rem;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.reporte-card select {
+  border: 1px solid #ccc;
+  background-color: #f8f8f8;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.reporte-card select:focus {
+  border-color: #9ba4af;
+  outline: none;
+}
+
+.reporte-card button {
+  background-color: #9ba4af;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.reporte-card button:hover {
+  background-color: #576f88;
+}
+
+/* Botón para ver historial */
+.btn-historial {
+  display: block;
+  margin: 0 auto 20px auto;
+  padding: 10px 16px;
+  background-color: #626c79;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  width: fit-content;
+}
+
+.btn-historial:hover {
+  background-color: #839bb4;
+}
+
+/* Mensaje vacío centrado */
+p {
+  text-align: center;
+  font-size: 1.05rem;
+  color: #666;
+  margin-top: 40px;
+}
+
+h1{
+  text-align: center;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+h3{
+  text-align: center;
+}

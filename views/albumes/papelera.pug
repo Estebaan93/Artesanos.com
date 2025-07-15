@@ -1,0 +1,14 @@
+extends ../layouts/logueado
+block headExtra
+  link(rel="stylesheet", href="/css/papelera.css")
+  script(src="https://cdn.jsdelivr.net/npm/sweetalert2@11")
+
+block content
+  h1 Papelera 
+  #papelera
+    each album in albumes
+      div.album-card
+        h3= album.titulo
+        button.btn-restaurar(data-id=album.id_album) Restaurar
+
+  script(src="/js/papelera.js")

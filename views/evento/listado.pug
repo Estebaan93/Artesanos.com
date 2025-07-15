@@ -1,0 +1,44 @@
+extends ../layouts/logueado
+
+block headExtra
+  link(rel="stylesheet" href="/css/evento.css")
+
+block content
+  h1 Eventos y Ferias
+  button#btnCrearEvento Crear nuevo evento
+
+  .container-eventos
+    if eventos.length
+      each evento in eventos
+        .evento-card
+          img(src='/src/img/calendario.jpg', alt=evento.titulo)
+          h3= evento.titulo
+          p= evento.descripcion
+          p Fecha: #{evento.fecha_evento.toLocaleDateString()}
+          p Lugar: #{evento.lugar}
+          p Horario: #{evento.horario}
+
+          if evento.finalizado
+            span.etiqueta-finalizado(
+              style="color: white; background-color: #dc3545; padding: 2px 8px; border-radius: 8px; display: inline-block; margin-bottom: 5px;"
+            ) Finalizado
+          else
+            if evento.requiere_login && !usuario
+              button(type="button", class="btnIniciaSesion") Iniciá sesión para inscribirte
+            else
+              button(
+                type="button",
+                class="btnInscribirse",
+                data-id=evento.id_evento,
+                data-publico=evento.requiere_login ? 0 : 1
+              ) Inscribirse
+              if evento.inscripto
+                button(
+                  type="button",
+                  class="btnCancelarInscripcion",
+                  data-id=evento.id_evento
+                ) Cancelar inscripción
+    else
+      p No hay eventos disponibles en este momento.
+
+  script(src="/js/evento.js")

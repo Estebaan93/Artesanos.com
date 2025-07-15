@@ -1,0 +1,122 @@
+/* /css/eventos.css */
+
+body {
+  background-color: #f0f2f5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #444;
+  margin: 0;
+  padding: 0;
+}
+
+.container-eventos {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 1rem; 
+  justify-content: center; 
+  padding: 1rem 0;
+}
+
+h1 {
+  text-align: center;
+  margin: 30px 0 25px 0;
+  color: #222;
+  font-weight: 700;
+  font-size: 28px;
+  
+}
+
+#btnCrearEvento {
+  display: block;
+  margin: 0 auto 30px auto;
+  padding: 12px 30px;
+  font-size: 16px;
+  background-color: #005f73;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+  box-shadow: 0 4px 8px rgba(0, 95, 115, 0.3);
+}
+
+#btnCrearEvento:hover {
+  background-color: #0a9396;
+  box-shadow: 0 6px 12px rgba(10, 147, 150, 0.5);
+}
+
+.evento-card {
+  background: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 1rem;
+  width: 300px; 
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.541); 
+  backdrop-filter: blur(10px);            
+  -webkit-backdrop-filter: blur(10px);   
+}
+
+.evento-card:hover {
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+.evento-card h3 {
+  margin-top: 0;
+  color: #0a9396;
+  font-weight: 600;
+  font-size: 22px;
+  text-align: center;
+}
+
+.evento-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 0.5rem auto;
+  
+}
+
+
+
+.evento-card p {
+  color: #444;
+  line-height: 1.5;
+  margin: 8px 0;
+}
+
+.evento-card p:nth-child(3) {
+  font-weight: 600;
+  color: #222;
+}
+
+.btnInscribirse ,
+.btnCancelarInscripcion {
+  margin-top: 15px;
+  margin: 8px auto;
+  padding: 6px 8px;
+  font-size: 15px;
+  background-color: #94d2bd;
+  color: #004643;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: 0 2px 5px rgba(148, 210, 189, 0.6);
+  display: block;
+}
+
+.btnInscribirse ,
+.btnCancelarInscripcion:hover {
+  background-color: #52796f;
+  color: #e0fbfc;
+  box-shadow: 0 4px 10px rgba(82, 121, 111, 0.8);
+}
+
+p {
+  text-align: center;
+  font-style: italic;
+  color: #777;
+  margin-top: 40px;
+  font-size: 18px;
+}

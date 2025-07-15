@@ -1,0 +1,44 @@
+extends ../layouts/logueado 
+
+block headExtra
+  link(rel="stylesheet", href="/css/reportes.css")
+
+block content
+  h1 Reportes sobre tus imágenes
+
+  if mostrarHistorial
+    a.btn-historial(href="/reportes/mis-reportes/historial") Ver historial completo
+
+  if reportes.length
+    .reporte-lista
+      each r in reportes
+        .reporte-card
+          img.reporte-img(
+            src= r.imagen
+              ? (r.imagen.startsWith('http')
+                ? r.imagen
+                : `/img/obras/${r.imagen}`)
+              : '/img/placeholder.png',
+            alt=`Imagen reportada: ${r.titulo_imagen}`
+          )
+
+          .contenido
+            h3= r.titulo_imagen
+            p
+              strong Motivo: 
+              | #{r.motivo}
+            p
+              strong Estado: 
+              span.estado(class=r.estado)= r.estado
+            p
+              strong Fecha: 
+              | #{r.fecha.toISOString().slice(0, 10)}
+            form(method="POST", action="/reportes/cambiar-estado")
+              input(type="hidden", name="id_reporte", value=r.id_reporte)
+              select(name="nuevo_estado")
+                option(value="pendiente", selected=r.estado === 'pendiente') Pendiente
+                option(value="revisado", selected=r.estado === 'revisado') Revisado
+                option(value="descartado", selected=r.estado === 'descartado') Descartado
+              button(type="submit") Actualizar
+  else
+    p No hay reportes sobre tus imágenes aún.

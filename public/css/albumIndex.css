@@ -1,0 +1,48 @@
+/* public/css/albumIndex.css */
+
+h1{
+  text-align: center;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+.albums-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+
+.album-card:hover {
+  transform: translateY(-4px) scale(1.03);
+}
+
+.album-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 16px;
+  width: 210px; /* ancho fijo */
+  text-align: center;
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centrar contenido */
+  background: rgba(255, 255, 255, 0.15); /* fondo blanco translúcido */
+  backdrop-filter: blur(10px);            /* desenfoque de fondo */
+  -webkit-backdrop-filter: blur(10px);    /* para Safari */
+}
+
+.album-card img {
+  object-fit: cover;
+  width: 160px;  /* ancho más pequeño para la imagen */
+  height: 100px; /* altura proporcional */
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+
+.album-card img[alt="Sin obras"] {
+  opacity: 0.4;
+}
+

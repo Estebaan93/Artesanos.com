@@ -1,0 +1,28 @@
+extends ../layouts/logueado
+
+block headExtra
+  link(rel="stylesheet", href="/css/albumIndex.css")
+  script(src="/js/albumIndex.js")
+
+block content
+  h1 Mis Álbumes
+
+  .albums-grid
+    if albumes.length === 0
+      p No tenés álbumes todavía.
+    else
+      each album in albumes
+        .album-card
+          a(href=`/albumes/${album.id_album}`)
+            if album.portada && album.portada.startsWith('http')
+              img(src=album.portada alt="Portada álbum")
+            else if album.portada
+              img(src=`/img/obras/${album.portada}` alt="Portada álbum")
+            else
+              img(src="/img/sin-obra.jpg" alt="Sin obras")
+            h3 #{album.titulo}
+            if album.tipo === 'espejo'
+              p Álbum compartido
+            else
+              p Creado: #{album.fecha.toISOString().slice(0,10)}
+

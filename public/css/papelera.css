@@ -1,0 +1,51 @@
+.album-card {
+  background: rgba(255, 255, 255, 0.15); /* fondo blanco translúcido */
+  backdrop-filter: blur(10px);            /* desenfoque de fondo */
+  -webkit-backdrop-filter: blur(10px);    /* para Safari */
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+  padding: 20px;
+  margin: 12px;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff; /* texto blanco para buen contraste */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.album-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(31, 38, 135, 0.25);
+}
+
+.album-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+  font-weight: 600;
+  text-align: center;
+  text-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+.btn-restaurar {
+  padding: 10px 16px;
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #222;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.btn-restaurar:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+  color: #000;
+}
+
+h1{
+  text-align: center;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}

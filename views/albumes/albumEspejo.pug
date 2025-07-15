@@ -1,0 +1,50 @@
+extends ../layouts/logueado
+
+block headExtra
+  link(rel="stylesheet", href="/css/albumDetalle.css")
+
+block content
+  h2 Álbum compartido de #{amigo.nombre}
+
+  if imagenes.length
+    .obras-grid
+      each img in imagenes
+        .obra-card
+          img.obra-miniatura(
+            src=img.imagen.startsWith('http') ? img.imagen : `/img/obras/${img.imagen}`,
+            alt=img.titulo,
+            width="180",
+            height="120",
+            data-id=img.id_imagen,
+            data-titulo=img.titulo,
+            data-visibilidad=img.visibilidad,
+            data-etiquetas=JSON.stringify(img.etiquetas || [])
+          )
+          h4 #{img.titulo}
+          
+          // Formulario para agregar comentario
+          form.form-comentario(data-id=img.id_imagen)
+            textarea(name="descripcion", placeholder="Escribí un comentario...", required rows="2")
+            button.btn-comentar(type="submit") Comentar
+            button.btn-reportar(data-id=img.id_imagen) 🚩 Reportar
+
+
+          // Contenedor para mostrar comentarios
+          div.comentarios(data-id=img.id_imagen)
+            // Comentarios se cargarán aquí dinámicamente
+
+  else
+    p Este álbum no tiene imágenes visibles para vos.
+
+  // Modal
+  div#modal-obra
+    div
+      button#cerrar-modal ×
+      img#modal-imagen
+      h3#modal-titulo
+      p#modal-visibilidad
+      div#modal-etiquetas
+      div#modal-comentarios
+
+  script(src="/js/albumScript.js")
+

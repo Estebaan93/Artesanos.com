@@ -1,0 +1,62 @@
+//-views/layouts/logueado.pug
+
+doctype html
+html
+  head
+    title Artesanos - #{title}
+    link(rel="stylesheet" href="/css/style.css")
+    link(rel="stylesheet" href="/css/notificaciones.css")
+    block headExtra
+  body
+    header
+      h1 Bienvenido, #{usuario.nombre}
+      nav
+        a(href="/home") Inicio
+        .dropdown
+          a(href="/albumes") Álbumes
+          ul.menu
+            li: a(href="/albumes") Ver álbumes
+            li: a(href="/albumes/nuevo") Crear álbum
+        form#formBuscar
+          input(type="text" name="busqueda" id="inputBusqueda" placeholder="Buscar personas, álbumes o imágenes...")
+          button(type="submit") Buscar
+          div#resultados
+
+
+        // Panel de notificaciones
+        .notificaciones-container
+          span#icono-notificacion 🔔
+          span#contador-notificaciones 0
+          div#panel-notificaciones
+            ul#lista-notificaciones
+              li No hay notificaciones nuevas.
+
+        //Menu desplegable
+        .perfil-dropdown
+          .avatar-container
+            - const avatar = usuario.avatarUrl?.startsWith('http') ? usuario.avatarUrl : `/img/perfiles/${usuario.avatarUrl || 'default.png'}`
+            a(href="/perfil")
+              img.avatar(src=avatar alt="avatar")
+            ul.menu
+              li: a(href="/perfil") Perfil
+              li: a(href="/estadisticas") Estadisticas
+              li: a(href="#" id="btn-amistades") Amistades
+              li: a(href="/perfil/editar") Configuracion
+              li: a(href='/reportes/mis-reportes') Mis reportes
+              li: a(href='/eventos') Eventos
+              li: a(href='/albumes/papelera') Papelera
+              li: a(href="#" id="btn-logout") Cerrar sesión
+
+    main
+      block content
+    footer
+      p © #{new Date().getFullYear()} Artesanos.com
+    script.
+      window.usuarioId = !{JSON.stringify(usuario.id_usuario)};
+    script(src="/socket.io/socket.io.js") 
+    script(src="/js/notificaciones.js")
+    script(src="https://cdn.jsdelivr.net/npm/sweetalert2@11")
+    script(src="/js/layoutScript.js")
+    script(src="/js/solicitudes.js")
+
+

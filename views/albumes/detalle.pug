@@ -1,0 +1,83 @@
+extends ../layouts/logueado
+
+block headExtra
+  link(rel="stylesheet", href="/css/albumDetalle.css")
+block content
+  h2 Álbum: #{album.titulo}
+  a.btn-subir-obra(href=`/albumes/${album.id_album}/obras/nueva`) Subir obra
+
+
+  if imagenes.length
+    .obras-grid
+      each img in imagenes
+        .obra-card
+          if img.imagen && img.imagen.startsWith('http')
+            img.obra-miniatura(
+              src=img.imagen,
+              alt=img.titulo,
+              width="180",
+              height="120",
+              data-id=img.id_imagen,
+              data-titulo=img.titulo,
+              data-visibilidad=img.visibilidad,
+              data-etiquetas=JSON.stringify(img.etiquetas || [])
+            )
+          else
+            img.obra-miniatura(
+              src=`/img/obras/${img.imagen}`,
+              alt=img.titulo,
+              width="180",
+              height="120",
+              data-id=img.id_imagen,
+              data-titulo=img.titulo,
+              data-visibilidad=img.visibilidad,
+              data-etiquetas=JSON.stringify(img.etiquetas || [])
+            )
+
+          h4 #{img.titulo}
+          p Visibilidad:
+            case img.visibilidad
+              when 'personal'
+                | Solo yo
+              when 'amigos'
+                | Amigos
+              when 'mejores_amigos'
+                | Mejores amigos
+              when 'publico'
+                | Público
+              when 'personalizada'
+                | Personalizada
+              default
+                = img.visibilidad
+
+          if img.etiquetas && img.etiquetas.length
+            p Etiquetas:
+              each etiqueta in img.etiquetas
+                span.etiqueta= etiqueta
+
+          // Formulario para agregar comentario
+          form.form-comentario(data-id=img.id_imagen)
+            textarea(name="descripcion", placeholder="Escribí un comentario...", required rows="2")
+            button.btn-comentar(type="submit") Comentar
+            button.btn-eliminar-imagen(type="button", data-id=img.id_imagen) 🗑️
+
+
+          // Contenedor para mostrar comentarios
+          div.comentarios(data-id=img.id_imagen)
+            // Comentarios se cargarán aquí dinámicamente
+
+  else
+    p Este álbum no tiene obras aún.
+
+  // Modal
+  div#modal-obra
+    div
+      button#cerrar-modal ×
+      img#modal-imagen
+      h3#modal-titulo
+      p#modal-visibilidad
+      div#modal-etiquetas
+      div#modal-comentarios
+
+  script(src="/js/albumScript.js")
+  script(src="/js/albumIndex.js")

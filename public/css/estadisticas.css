@@ -1,0 +1,42 @@
+/* Contenedor general de estadísticas */
+.estadisticas-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Título solo dentro de estadísticas */
+.estadisticas-container h2 {
+  font-size: 1.8rem;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Lista de estadísticas */
+.estadisticas-container ul {
+  list-style: none;
+  padding: 20px 30px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Cada ítem */
+.estadisticas-container ul li {
+  font-size: 1.1rem;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* El último ítem sin borde inferior */
+.estadisticas-container ul li:last-child {
+  border-bottom: none;
+}
+
+/* Ícono decorativo para cada ítem */
+.estadisticas-container ul li::before {
+  content: "📊 ";
+  margin-right: 6px;
+}

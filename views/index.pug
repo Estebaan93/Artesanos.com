@@ -1,0 +1,58 @@
+extends layouts/layout.pug
+
+block content
+  - var artesanias = [{ nombre: 'Maceta pintada', imagen: '/src/img/maceta.jpg' }, { nombre: 'Collar de cerámica', imagen: '/src/img/collar.jpg' }, { nombre: 'Cuadro bordado', imagen: '/src/img/cuadro.jpg' }]
+
+  .home-contenedor
+    .hero-texto
+      h1 Encuentra creaciones únicas hechas a mano
+      p Conectamos a los artesanos con personas que valoran lo hecho con el corazón.
+      a.btn-explorar(href="/explorar") Explorar Artesanías
+
+    .galeria-destacados
+      h2 Artesanías destacadas
+      .tarjetas
+        each item in artesanias
+          .tarjeta
+            img(src=item.imagen, alt=item.nombre)
+            h3= item.nombre
+            p Artesanía única hecha a mano con amor.
+            a.btn-ver(href="#") Ver más
+
+    .eventos-section
+      h2 Próximos Eventos
+      .tarjetas
+        if eventos && eventos.length
+          each evento in eventos
+            .tarjeta
+              img(src='/src/img/calendario.jpg', alt=evento.titulo)
+              h3= evento.titulo
+              p= evento.descripcion
+
+              if evento.finalizado
+                span.etiqueta-finalizado(
+                  style="color: white; background-color: #dc3545; padding: 2px 8px; border-radius: 8px; display: inline-block; margin-bottom: 5px;"
+                ) Finalizado
+              else
+                button(
+                type="button",
+                class="btnInscribirseHome",
+                data-id=evento.id_evento,
+                data-publico=(evento.requiere_login ? 0 : 1),
+                data-titulo=evento.titulo,
+                data-fecha=evento.fecha_evento,
+                data-horario=evento.horario,
+                data-lugar=evento.lugar
+                ) Inscribirse
+        else
+          p.text-center No hay eventos próximos disponibles.
+
+    .conecta-artesanos
+      h2 Conectá con artesanos de toda la región
+      .tarjetas
+        .tarjeta
+          img(src='/src/img/giphy.gif', alt='Mapa interactivo de artesanos')
+          h3 Comunidad Artesanal
+          p Unite a una red de creadores que comparten su arte y cultura.
+          p Conectarse
+

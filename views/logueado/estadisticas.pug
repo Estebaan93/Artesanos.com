@@ -1,0 +1,15 @@
+//-views/logueado/estadisticas
+extends ../layouts/logueado
+block headExtra
+  link(rel="stylesheet", href="/css/estadisticas.css")
+
+block content
+  .estadisticas-container
+    h2 Estadísticas de tu perfil
+    ul
+      li Álbumes creados: #{albumes}
+      li Imágenes subidas: #{imagenes}
+      li Comentarios recibidos: #{comentarios}
+      li Reportes recibidos: #{reportes}
+      li Eventos: #{eventos}
+
