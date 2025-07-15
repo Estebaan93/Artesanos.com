@@ -40,8 +40,12 @@ document.addEventListener("DOMContentLoaded", () => {
         html += `<h4>👤 Usuarios</h4><ul>`;
         html += usuarios
           .map((u) => {
+            const avatarSrc= u.avatarUrl && u.avatarUrl.startsWith('http')
+              ? u.avatarUrl
+              : `/img/perfiles/${u.avatarUrl || 'default.png'}`;
+
             const avatar = `
-              <img src="${u.avatarUrl || '/img/perfiles/default.png'}"
+              <img src="${avatarSrc || '/img/perfiles/default.png'}"
                    onerror="this.onerror=null; this.src='/img/perfiles/default.png';"
                    alt="Avatar"
                    style="width:40px; height:40px; border-radius:50%; vertical-align:middle; margin-right:8px;">`;
