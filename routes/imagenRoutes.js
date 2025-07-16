@@ -2,7 +2,7 @@
 
 import express from 'express';
 import { uploadObra } from '../middlewares/upload.js';
-import { mostrarFormularioSubir, procesarSubidaImagen, eliminarImagen } from '../controllers/imagenController.js';
+import { mostrarFormularioSubir, procesarSubidaImagen, eliminarImagen, mostrarImagenPorId } from '../controllers/imagenController.js';
 
 const router = express.Router();
 
@@ -17,6 +17,9 @@ router.get('/albumes/:id_album/obras/nueva', soloLogueados, mostrarFormularioSub
 // Procesar subida (archivo o URL)
 router.post('/albumes/:id_album/obras', soloLogueados, uploadObra.single('imagen_local'), procesarSubidaImagen);
 router.post("/imagenes/:id_imagen/eliminar", eliminarImagen);
+
+//Ver img individual por id (comentario notificacion)
+router.get('/imagen/:id_imagen', mostrarImagenPorId);
 
 export default router;
 
