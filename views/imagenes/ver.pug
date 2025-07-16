@@ -1,2 +1,45 @@
 //views/imagenes/ver.pug
 
+extends ../layouts/logueado
+
+block headExtra
+  link(rel="stylesheet", href="/css/modalImagen.css")
+
+block content
+  .modal-img-card
+    button.close-modal(type="button", onclick='cerrarModal()') ×
+    if imagen.imagen && imagen.imagen.startsWith('http')
+      img(src=imagen.imagen, alt=imagen.titulo)
+    else
+      img(src=`/img/obras/${imagen.imagen}`, alt=imagen.titulo)
+    div.titulo-img #{imagen.titulo}
+    if imagen.visibilidad
+      div.visibilidad Visibilidad: #{imagen.visibilidad}
+    if imagen.etiquetas && imagen.etiquetas.length
+      div
+        each etiqueta in imagen.etiquetas
+          span.etiqueta= etiqueta
+    if imagen.descripcion
+      p(style="margin:1rem 0 1.5rem 0; color:#474747") #{imagen.descripcion}
+
+    if comentarios && comentarios.length
+      div.comentarios
+        h4 Comentarios
+        each c in comentarios
+          div.comentario
+            strong= c.nombre_usuario
+            | : #{c.descripcion}
+            if c.fecha
+              span(style="color:#9a9a9a;font-size:12px") &nbsp; #{new Date(c.fecha).toLocaleString()}
+    else
+      div.comentarios
+        h4 Comentarios
+        p(style="color:#bbb") No hay comentarios aún.
+
+    form(method="POST", action=`/obras/${imagen.id_imagen}/comentarios`)
+      textarea(name="descripcion", placeholder="Escribí un comentario...", required rows="2" style="width: 100%;margin-top:12px;")
+      button.btn-comentar(type="submit" style="margin-top:5px") Comentar
+
+block scripts
+  script(src="/js/modalImagen.js")
+

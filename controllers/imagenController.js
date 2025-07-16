@@ -111,17 +111,24 @@ export const eliminarImagen = async (req, res) => {
 };
 
 //
-export const mostrarImagenPorId= async(req, res)=>{
-  const id_imagen= req.session.id_imagen;
-  try{
-    const imagen= await obtenerImagenPorId(id_imagen);
-    if(!imagen){
+export const mostrarImagenPorId = async (req, res) => {
+  const id_imagen = req.params.id_imagen; // <-- del parámetro, no la sesión
+  try {
+    const imagen = await obtenerImagenPorId(id_imagen);
+    if (!imagen) {
       return res.status(404).send('Imagen no encontrada');
     }
-    //Enviamos a la vista de ver img
-    res.render('imagenes/ver',{imagen});
-  }catch(error){
-    console.error(`Error al obtener imagen ${error}`)
+
+    // Obtener comentarios de la imagen
+    const comentarios = await obtenerComentariosPorImagen(id_imagen);
+
+    // Asegúrate que 'imagen' tenga id_album
+    const albumId = imagen.id_album;
+
+    // Renderiza la vista con imagen, comentarios y albumId
+    res.render('imagenes/ver', { imagen, comentarios, albumId });
+  } catch (error) {
+    console.error(`Error al obtener imagen: ${error}`);
     res.status(500).send('Error del servidor');
   }
 }
