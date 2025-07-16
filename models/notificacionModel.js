@@ -29,13 +29,13 @@ export const obtenerNotificacionesNoLeidas = async (id_usuario) => {
       u2.nombre AS remitente, 
       sa.accion, 
       sa.id_destinatario, 
-      sa.id_usuario AS remitente_id, 
+      sa.id_destinatario AS remitente_id, 
       sa.id_solicitud AS ref_id,
       NULL AS extracto,
       NULL AS titulo_imagen
     FROM notificacion_amistad na
     JOIN solicitud_amistad sa ON na.id_solicitud = sa.id_solicitud
-    JOIN usuario u2 ON sa.id_usuario = u2.id_usuario
+    JOIN usuario u2 ON sa.id_destinatario = u2.id_usuario
     WHERE na.id_usuario = ? AND na.tipo = 'aceptacion'
 
     UNION ALL
