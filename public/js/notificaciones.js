@@ -1,6 +1,4 @@
 // public/js/notificaciones.js
-
-////notificaciones.js
 console.log("Activo");
 document.addEventListener("DOMContentLoaded", () => {
   const socket = io();
@@ -88,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     <span><strong>${notif.remitente}</strong> comentó en tu imagen:</span><br>
     <em>"${notif.extracto}"</em><br>
     <span><strong>Título:</strong> ${notif.titulo_imagen}</span><br>
-    <a href="/imagen/${notif.ref_id}" target="_blank" style="color: red; font-weight: bold; text-decoration: underline;">Ver imagen</a><br>
+    <a href="/albumes/${notif.id_album}?img=${notif.ref_id}" target="_blank" style="color: red; font-weight: bold; text-decoration: underline;">Ver imagen</a>
 
     <button class="btn-leer">Marcar como leída</button>
   `;

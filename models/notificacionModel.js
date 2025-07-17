@@ -14,7 +14,8 @@ export const obtenerNotificacionesNoLeidas = async (id_usuario) => {
       sa.id_usuario AS remitente_id, 
       sa.id_solicitud AS ref_id,
       NULL AS extracto,
-      NULL AS titulo_imagen
+      NULL AS titulo_imagen,
+      NULL AS id_album
     FROM notificacion_amistad na
     JOIN solicitud_amistad sa ON na.id_solicitud = sa.id_solicitud
     JOIN usuario u ON sa.id_usuario = u.id_usuario
@@ -32,7 +33,8 @@ export const obtenerNotificacionesNoLeidas = async (id_usuario) => {
       sa.id_destinatario AS remitente_id, 
       sa.id_solicitud AS ref_id,
       NULL AS extracto,
-      NULL AS titulo_imagen
+      NULL AS titulo_imagen,
+      NULL AS id_album
     FROM notificacion_amistad na
     JOIN solicitud_amistad sa ON na.id_solicitud = sa.id_solicitud
     JOIN usuario u2 ON sa.id_destinatario = u2.id_usuario
@@ -50,7 +52,8 @@ export const obtenerNotificacionesNoLeidas = async (id_usuario) => {
       c.id_usuario AS remitente_id, 
       c.id_imagen AS ref_id,
       LEFT(c.descripcion, 100) AS extracto,
-      i.titulo AS titulo_imagen
+      i.titulo AS titulo_imagen,
+      a.id_album AS id_album
     FROM notificacion_contenido nc
     JOIN comentarios c ON nc.id_comentario = c.id_comentario
     JOIN usuario u ON c.id_usuario = u.id_usuario

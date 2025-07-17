@@ -1,3 +1,4 @@
+//-views/notificaciones/listar.pug
 extends ../layouts/logueado
 
 block content
@@ -20,7 +21,7 @@ block content
             br
             | "#{n.extracto ? n.extracto : ''}"
             br
-            a(href=`/imagen/${n.ref_id}`) Ver imagen
+            a(href=`/albumes/${n.id_album}?img=${n.ref_id}`) Ver imagen
           button.btn-marcar-leida.btn.btn-outline-secondary.btn-sm(type="button" data-id-notificacion=n.id_notificacion) Marcar como leída
 
         else if n.tipo === 'aceptacion'

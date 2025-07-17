@@ -3,6 +3,7 @@ import pool from '../config/db.js';
 
 import { eliminarAlbumPorId } from "../models/albumModel.js";
 import { insertarImagen, asociarImagenAlbum, obtenerValoresEnumVisibilidad , obtenerEtiquetas, asociarEtiquetaImagen, eliminarImagenPorId, obtenerImagenPorId} from "../models/imagenModel.js";
+import {obtenerComentariosDeImagen} from '../models/comentarioModel.js'
 
 // Mostrar formulario para subir imagen
 export const mostrarFormularioSubir = async (req, res) => {
@@ -120,7 +121,7 @@ export const mostrarImagenPorId = async (req, res) => {
     }
 
     // Obtener comentarios de la imagen
-    const comentarios = await obtenerComentariosPorImagen(id_imagen);
+    const comentarios = await obtenerComentariosDeImagen(id_imagen);
 
     // Asegúrate que 'imagen' tenga id_album
     const albumId = imagen.id_album;

@@ -77,3 +77,12 @@ form.form-comentario button {
   border-radius: 10px;
   font-size: 0.9em;
 }
+
+#modal-comentarios, .comentarios-modal {
+  max-height: 180px;
+  overflow-y: auto;
+  background: #f7f3f0;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-top: 1.2rem;
+}
