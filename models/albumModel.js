@@ -114,12 +114,12 @@ export const eliminarAlbumPorId = async (id_album) => {
 export const buscarAlbumesPorTituloOEtiqueta = async (termino) => {
   const [rows] = await pool.query(
     `
-    SELECT DISTINCT a.id_album, a.titulo
+    SELECT DISTINCT a.id_album, a.titulo, a.fecha
     FROM album a
     LEFT JOIN imagen i ON i.id_album = a.id_album
     LEFT JOIN imagen_etiqueta ie ON ie.id_imagen = i.id_imagen
     LEFT JOIN etiqueta e ON e.id_etiqueta = ie.id_etiqueta
-    WHERE a.titulo LIKE ? OR e.nombre LIKE ? AND a.estado = 1
+    WHERE (a.titulo LIKE ? OR e.nombre LIKE ?) AND a.estado = 1
     ORDER BY a.fecha DESC
     `,
     [`%${termino}%`, `%${termino}%`]
@@ -131,12 +131,12 @@ export const buscarImagenesPorTituloOEtiqueta = async (termino) => {
   const [rows] = await pool.query(
     `
     SELECT DISTINCT i.id_imagen, i.titulo, i.id_album, i.visibilidad, i.imagen,
-           a.id_usuario AS autor_id
+           a.id_usuario AS autor_id, i.fecha
     FROM imagen i
     JOIN album a ON a.id_album = i.id_album
     LEFT JOIN imagen_etiqueta ie ON ie.id_imagen = i.id_imagen
     LEFT JOIN etiqueta e ON e.id_etiqueta = ie.id_etiqueta
-    WHERE i.titulo LIKE ? OR e.nombre LIKE ? AND a.estado = 1
+    WHERE (i.titulo LIKE ? OR e.nombre LIKE ?) AND a.estado = 1
     ORDER BY i.fecha DESC
     `,
     [`%${termino}%`, `%${termino}%`]
