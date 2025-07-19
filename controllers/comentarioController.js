@@ -35,14 +35,29 @@ export const crearComentario = async (req, res) => {
     });
 
     // 2. Insertar notificación al autor de la imagen
-    await insertarNotificacionContenido({ id_comentario });
+    /*await insertarNotificacionContenido({ id_comentario });*/
+    const [[{ id_usuario: id_autor }]] = await pool.query(
+  'SELECT a.id_usuario FROM imagen i JOIN album a ON i.id_album = a.id_album WHERE i.id_imagen = ?',
+  [id_imagen]
+);
 
     // 3. Obtener el dueño de la imagen para notificar
-    const [[{ id_usuario: id_autor }]] = await pool.query(
+    /*const [[{ id_usuario: id_autor }]] = await pool.query(
       'SELECT a.id_usuario FROM imagen i JOIN album a ON i.id_album = a.id_album WHERE i.id_imagen = ?',
       [id_imagen]
-    );
-
+    );*/
+    // 3. Solo insertar notificación si el comentarista no es el autor
+  if (id_autor !== id_usuario) {
+  // Insertar notificación
+  await insertarNotificacionContenido({ id_comentario });
+  // Emitir push si el autor está conectado
+  emitirNotificacion(id_autor, {
+    tipo: 'comentario',
+    mensaje: `Nuevo comentario en tu imagen`,
+    ref_id: id_imagen
+  });
+}
+    
     // 4. Emitir notificación si el autor está conectado
     if (id_autor !== id_usuario) {
       emitirNotificacion(id_autor, {
