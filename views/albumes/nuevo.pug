@@ -5,7 +5,7 @@ block content
 
   .div-fondo
     .modal-crear-album
-      button.cerrar(type="button", aria-label="Cerrar") ×
+      button.cerrar#cerrar-modal(type="button", aria-label="Cerrar") ×
       h2 Crear Álbum
       form(action="/albumes" method="POST")
         input(type="text" name="titulo" placeholder="Título del álbum" required)

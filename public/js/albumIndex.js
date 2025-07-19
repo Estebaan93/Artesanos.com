@@ -1,6 +1,15 @@
 // public/js/albumIndex.js
 
 document.addEventListener("DOMContentLoaded", () => {
+  // --- Cierre modal de crear álbum ---
+  const cerrarBtn = document.getElementById('cerrar-modal');
+  const fondo = document.querySelector('.div-fondo');
+  if (cerrarBtn && fondo) {
+    cerrarBtn.addEventListener('click', function() {
+      fondo.style.display = 'none';
+    });
+  }
+
   // Función para eliminar álbum vía fetch (DELETE)
   const eliminarAlbum = async (idAlbum, cardElement) => {
     if (
