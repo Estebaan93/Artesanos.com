@@ -6,9 +6,22 @@ block headExtra
 block content
   h1 Papelera 
   #papelera
-    each album in albumes
-      div.album-card
-        h3= album.titulo
-        button.btn-restaurar(data-id=album.id_album) Restaurar
+    if albumes.length
+      h2 Albumes eliminados
+      each album in albumes
+        div.album-card
+          h3= album.titulo
+          button.btn-restaurar-album(data-id=album.id_album) Restaurar
+    if imagenes && imagenes.length
+      h2 Imagenes eliminad 
+      each img in imagenes  
+        div.imagen-card
+          img(src=`/img/obras/${img.imagen}` height="90")
+          p #{img.titulo}
+          button.btn-restaurar-img(data-id=img.id_imagen) Restaurar
+          button.btn-eliminar-def(data-id=img.id_imagen) Eliminar definitivo
+    if !albumes.length && (!imagenes || !imagenes.length)
+      p.text-muted No hay álbumes ni imágenes en la papelera.
+
 
   script(src="/js/papelera.js")

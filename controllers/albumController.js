@@ -1,5 +1,5 @@
 import { crearAlbum, obtenerAlbumDeUsuario, obtenerAlbumPorId, eliminarAlbumPorId , obtenerAlbumesEliminados , restaurarAlbumPorId  } from '../models/albumModel.js';
-import {obtenerImagenesVisiblesPorUsuario,obtenerImagenesVisibles, obtenerEtiquetasPorImagen } from '../models/imagenModel.js';
+import {obtenerImagenesVisiblesPorUsuario,obtenerImagenesVisibles, obtenerEtiquetasPorImagen, obtenerImagenesEliminadas } from '../models/imagenModel.js';
 import { obtenerUsuarioPorId ,  obtenerAmigosPorUsuario  } from '../models/usuarioModel.js';
 
 
@@ -152,7 +152,8 @@ export const verPapelera = async (req, res) => {
 
   try {
     const albumes = await obtenerAlbumesEliminados(id_usuario);
-    res.render('albumes/papelera', { albumes });
+    const imagenes= await obtenerImagenesEliminadas(id_usuario);
+    res.render('albumes/papelera', { albumes, imagenes });
   } catch (error) {
     console.error("Error al cargar la papelera:", error);
     res.status(500).send("Error interno");

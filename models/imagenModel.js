@@ -1,5 +1,7 @@
 // models/imagenModel.js
 import pool from "../config/db.js";
+import path from "path";
+import fs from "fs";
 
 
 export const insertarImagen = async ({ imagen, titulo, visibilidad, id_album }) => {
@@ -260,4 +262,37 @@ export const eliminarImagen = async (req, res) => {
     console.error("Error al eliminar imagen:", error);
     res.status(500).send("Error interno");
   }
+};
+
+//Papelera
+export const obtenerImagenesEliminadas= async (id_usuario)=>{
+  const [rows]= await pool.query(`
+    SELECT i.*, a.titulo AS album_titulo
+    FROM imagen i
+    JOIN album a ON i.id_album = a.id_album
+    WHERE a.id_usuario = ? AND i.estado = 0
+    ORDER BY i.fecha DESC
+    `, [id_usuario]);
+    return rows;
+};
+
+export const restaurarImagenPorId = async (id_imagen) => {
+  const [result] = await pool.query(`
+    UPDATE imagen SET estado = 1 WHERE id_imagen = ?
+  `, [id_imagen]);
+  return result.affectedRows > 0;
+};
+
+
+export const eliminarImagenDefinitivamente = async (id_imagen) => {
+  const [rows] = await pool.query('SELECT imagen FROM imagen WHERE id_imagen = ?', [id_imagen]);
+  if (rows.length > 0) {
+    const nombreArchivo = rows[0].imagen;
+    const rutaArchivo = path.join('public', 'img', 'obras', nombreArchivo);
+    if (fs.existsSync(rutaArchivo)) fs.unlinkSync(rutaArchivo);
+  }
+  await pool.query('DELETE FROM comentarios WHERE id_imagen = ?', [id_imagen]);
+  await pool.query('DELETE FROM imagen_etiqueta WHERE id_imagen = ?', [id_imagen]);
+  await pool.query('DELETE FROM imagen WHERE id_imagen = ?', [id_imagen]);
+  return true;
 };

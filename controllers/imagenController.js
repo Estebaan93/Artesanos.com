@@ -2,7 +2,7 @@
 import pool from '../config/db.js';
 
 import { eliminarAlbumPorId } from "../models/albumModel.js";
-import { insertarImagen, asociarImagenAlbum, obtenerValoresEnumVisibilidad , obtenerEtiquetas, asociarEtiquetaImagen, eliminarImagenPorId, obtenerImagenPorId} from "../models/imagenModel.js";
+import { insertarImagen, asociarImagenAlbum, obtenerValoresEnumVisibilidad , obtenerEtiquetas, asociarEtiquetaImagen, eliminarImagenPorId, obtenerImagenPorId, obtenerImagenesEliminadas, restaurarImagenPorId, eliminarImagenDefinitivamente} from "../models/imagenModel.js";
 import {obtenerComentariosDeImagen} from '../models/comentarioModel.js'
 
 // Mostrar formulario para subir imagen
@@ -133,3 +133,28 @@ export const mostrarImagenPorId = async (req, res) => {
     res.status(500).send('Error del servidor');
   }
 }
+
+//Papelera
+/*export const verPapelera = async (req, res) => {
+  const id_usuario = req.session.usuario.id_usuario;
+  const imagenes = await obtenerImagenesEliminadas(id_usuario);
+  res.render('imagenes/papelera', { imagenes })
+};*/
+
+export const restaurarImagen = async (req, res) => {
+  const id_imagen = req.params.id_imagen;
+  await restaurarImagenPorId(id_imagen);
+  res.redirect('/imagenes/papelera');
+};
+
+ // Eliminar una imagen definitivamente (y su archivo, comentarios, etiquetas)
+export const eliminarImagenDefinitivamenteCtrl = async (req, res) => {
+  const id_imagen = req.params.id_imagen;
+  try {
+    await eliminarImagenDefinitivamente(id_imagen);
+    res.status(200).send("Imagen eliminada definitivamente");
+  } catch (error) {
+    console.error(`Error al eliminar img ${error}`)
+    res.status(500).send("Error interno", error);
+  }
+};
