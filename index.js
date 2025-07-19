@@ -26,7 +26,6 @@ const io= new Server(server);
 const onlineUsers= new Map();
 
 import fs from 'fs';
-import path from 'path';
 
 ['public/img/perfiles', 'public/img/obras'].forEach(dir => {
   if (!fs.existsSync(dir)){
