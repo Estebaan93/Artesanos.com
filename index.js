@@ -25,6 +25,19 @@ const server= http.createServer(app);
 const io= new Server(server);
 const onlineUsers= new Map();
 
+import fs from 'fs';
+import path from 'path';
+
+['public/img/perfiles', 'public/img/obras'].forEach(dir => {
+  if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir, { recursive: true });
+  }
+});
+
+
+
+
+
 io.on('connection',(socket)=>{
   console.log('Cliente conectado', socket.id);
 
