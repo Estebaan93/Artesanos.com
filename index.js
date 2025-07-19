@@ -25,6 +25,7 @@ const server= http.createServer(app);
 const io= new Server(server);
 const onlineUsers= new Map();
 
+/*Para el hosting => crea las carpetas persistentes */
 import fs from 'fs';
 
 ['public/img/perfiles', 'public/img/obras'].forEach(dir => {
