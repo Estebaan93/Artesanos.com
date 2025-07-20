@@ -101,6 +101,7 @@ import { uploadPerfil } from '../middlewares/upload.js';
 import { mostrarEstadisticasPerfil } from '../controllers/estadisticaController.js';
 import { obtenerAmigosPorUsuario, eliminarAmistad } from '../models/amistadModel.js';
 import { mostrarHome } from '../controllers/eventoController.js';
+import {homeLogueado} from '../controllers/homeController.js';
 
 const router = express.Router();
 
@@ -119,12 +120,8 @@ router.get('/logueado', soloLogueados, listarUsuarios);
 router.get('/logueado/:id', soloLogueados, mostrarPerfil);
 
 // Ruta /home solo para usuarios autenticados
-router.get('/home', soloLogueados, (req, res) => {
-  res.render('logueado/home', {
-    title: 'Inicio',
-    usuario: req.session.usuario
-  });
-});
+router.get('/home', soloLogueados, homeLogueado);
+
 
 router.get('/usuarios/buscador', soloLogueados, mostrarBuscador);
 router.get('/api/usuarios/buscar', soloLogueados, apiBuscarUsuarios);

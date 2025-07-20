@@ -168,3 +168,41 @@ export const restaurarAlbumPorId = async (id_album) => {
   );  
   return result.affectedRows > 0;
 };
+
+// Devuelve álbumes públicos de otros usuarios, con imágenes públicas y comentarios
+export async function obtenerAlbumesPublicosConImagenesYComentarios(id_usuario_actual) {
+  // Todos los álbumes activos, menos los del usuario logueado
+  const [albumes] = await pool.query(`
+    SELECT a.id_album, a.titulo, a.id_usuario AS autor_id, u.nombre AS autor_nombre, u.apellido AS autor_apellido
+    FROM album a
+    JOIN usuario u ON a.id_usuario = u.id_usuario
+    WHERE a.estado = 1 AND a.id_usuario != ?
+    ORDER BY a.fecha DESC
+    LIMIT 15
+  `, [id_usuario_actual]);
+
+  for (const album of albumes) {
+    // Imágenes públicas de cada álbum
+    const [imagenes] = await pool.query(`
+      SELECT i.id_imagen, i.titulo, i.imagen
+      FROM imagen i
+      WHERE i.id_album = ? AND i.visibilidad = 'publico' AND i.estado = 1
+      ORDER BY i.fecha DESC
+      LIMIT 5
+    `, [album.id_album]);
+    // Comentarios de cada imagen
+    for (const img of imagenes) {
+      const [comentarios] = await pool.query(`
+        SELECT c.descripcion, u.nombre AS usuario
+        FROM comentarios c
+        JOIN usuario u ON c.id_usuario = u.id_usuario
+        WHERE c.id_imagen = ?
+        ORDER BY c.id_comentario DESC
+        LIMIT 5
+      `, [img.id_imagen]);
+      img.comentarios = comentarios;
+    }
+    album.imagenes = imagenes;
+  }
+  return albumes;
+}
