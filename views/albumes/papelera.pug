@@ -1,3 +1,4 @@
+//- public/views/albumes/papelera.pug
 extends ../layouts/logueado
 block headExtra
   link(rel="stylesheet", href="/css/papelera.css")
@@ -16,7 +17,8 @@ block content
       h2 Imagenes eliminad 
       each img in imagenes  
         div.imagen-card
-          img(src=`/img/obras/${img.imagen}` height="90")
+          - const srcImg = img.imagen && img.imagen.startsWith('http') ? img.imagen : `/img/obras/${img.imagen}`
+          img(src=srcImg height="90")
           p #{img.titulo}
           button.btn-restaurar-img(data-id=img.id_imagen) Restaurar
           button.btn-eliminar-def(data-id=img.id_imagen) Eliminar definitivo

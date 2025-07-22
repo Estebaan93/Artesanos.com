@@ -1,4 +1,4 @@
-
+//routes/albumRouter.js
 import express from 'express';
 import { listarAlbumes, mostrarFormularioCrear, crearAlbumPost, verAlbum, eliminarAlbum , verAlbumEspejo, verPapelera , restaurarAlbum} from '../controllers/albumController.js';
 import {restaurarImagen, eliminarImagenDefinitivamenteCtrl} from '../controllers/imagenController.js';

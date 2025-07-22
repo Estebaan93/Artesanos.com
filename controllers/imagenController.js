@@ -144,7 +144,7 @@ export const mostrarImagenPorId = async (req, res) => {
 export const restaurarImagen = async (req, res) => {
   const id_imagen = req.params.id_imagen;
   await restaurarImagenPorId(id_imagen);
-  res.redirect('/imagenes/papelera');
+  res.redirect('/albumes/papelera');
 };
 
  // Eliminar una imagen definitivamente (y su archivo, comentarios, etiquetas)
