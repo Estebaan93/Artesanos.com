@@ -190,6 +190,10 @@ body *:not(input):not(textarea):not([contenteditable]) {
 
 
 /* --- Cards home logueado --- */
+.homeLogueado{
+  color: white;
+  text-align: center;
+}
 .home-cards-container {
   display: flex;
   flex-wrap: wrap;

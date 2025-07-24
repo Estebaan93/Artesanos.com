@@ -5,26 +5,37 @@ block headExtra
   link(rel="stylesheet", href="/css/explorerPublico.css")
 
 block content
-  //- SECCIÓN EVENTOS
+
+  // SECCIÓN EVENTOS
   if eventos && eventos.length
-    h2 Eventos destacados
+    h2.homeLogueado Eventos destacados
     .home-cards-container
       each evento in eventos
         .home-card
           if evento.imagen
-            img(
-              src=evento.imagen,
-              alt=evento.titulo
-            )
+            img(src=evento.imagen, alt=evento.titulo)
           h3= evento.titulo
           p= evento.descripcion
-          if evento.fecha
-            p Fecha: #{evento.fecha}
+          if evento.finalizado
+            span.etiqueta-finalizado(
+              style="color: white; background-color: #dc3545; padding: 2px 8px; border-radius: 8px; display: inline-block; margin-top: 5px;"
+            ) Finalizado
+          else
+            button(
+              type="button",
+              class="btnInscribirseHome",
+              data-id=evento.id_evento,
+              data-publico=(evento.requiere_login ? 0 : 1),
+              data-titulo=evento.titulo,
+              data-fecha=evento.fecha_evento,
+              data-horario=evento.horario,
+              data-lugar=evento.lugar
+            ) Inscribirse
   else
     p.mensaje-alerta No hay eventos para mostrar.
 
-  //- SECCIÓN ÁLBUMES PÚBLICOS DE USUARIOS
-  h2 Álbumes públicos de la comunidad
+  // SECCIÓN ÁLBUMES PÚBLICOS DE USUARIOS
+  h2.homeLogueado Álbumes públicos de la comunidad
 
   if albumesPublicos && albumesPublicos.length
     .home-cards-container
@@ -47,23 +58,19 @@ block content
                     data-usuario=`${album.autor_nombre} ${album.autor_apellido}`,
                     data-titulo=img.titulo
                   )
-                //- Comentarios y formulario (solo logueado, ¡y este home es para logueados!)
-                if img.comentarios && img.comentarios.length
-                  ul.comentarios
-                    each com in img.comentarios
-                      li
-                        strong= com.usuario
-                        | : #{com.descripcion}
-                //- Formulario para comentar
-                form(
-                  method="POST",
-                  action=`/imagen/${img.id_imagen}/comentario`,
-                  class="form-comentar"
-                )
-                  textarea(name="descripcion" required placeholder="Agregar un comentario…")
-                  button(type="submit") Comentar
+                  if img.comentarios && img.comentarios.length
+                    ul.comentarios
+                      each com in img.comentarios
+                        li
+                          strong= com.usuario
+                          | : #{com.descripcion}
+                  form(method="POST", action=`/obras/${img.id_imagen}/comentarios`, class="form-comentar")
+                    textarea(name="descripcion" required placeholder="Agregar un comentario…")
+                    button(type="submit") Comentar
   else
     p.mensaje-alerta No hay álbumes públicos en este momento.
-
+  
+  script.
+    window.usuario= !{JSON.stringify(usuario)};
   script(src="/js/modalImagen.js")
-  script(src="/js/homeIndex.js")     
+  script(src="/js/homeIndex.js")

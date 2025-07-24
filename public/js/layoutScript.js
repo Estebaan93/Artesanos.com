@@ -301,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <hr style="margin: 10px 0;">
             <input id="nombre" class="swal2-input" placeholder="Nombre">
             <input id="apellido" class="swal2-input" placeholder="Apellido">
-            <label style="text-align:left; width:100%; margin-top: 0.5rem;">
+            <label style="text-align:left; width:100%; margin-top: 0.5rem; display:flex">
               <input type="checkbox" id="asistire" checked> Confirmo que asistiré
             </label>
           </div>

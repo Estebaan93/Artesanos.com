@@ -1,4 +1,4 @@
-//homeController.js
+//controllers/homeController.js
 import { obtenerAlbumesPublicosConImagenesYComentarios } from "../models/albumModel.js";
 import { obtenerEventosPublicados } from "../models/eventoModel.js"; // Opcional, según tu modelo
 
