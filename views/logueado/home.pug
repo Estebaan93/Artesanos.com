@@ -11,6 +11,11 @@ block content
     .home-cards-container
       each evento in eventos
         .home-card
+          if evento.imagen
+            img(
+              src=evento.imagen,
+              alt=evento.titulo
+            )
           h3= evento.titulo
           p= evento.descripcion
           if evento.fecha

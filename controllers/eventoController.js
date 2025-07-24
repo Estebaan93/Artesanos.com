@@ -1,12 +1,5 @@
 // controllers/eventoController.js
-import {
-  crearEvento,
-  obtenerEventosPublicados,
-  inscribirAEvento,
-  cancelarInscripcion,
-  obtenerEventoPorId,
-  obtenerEventosPorUsuario
-} from '../models/eventoModel.js';
+import {crearEvento, obtenerEventosPublicados, inscribirAEvento, cancelarInscripcion, obtenerEventoPorId, obtenerEventosPorUsuario} from '../models/eventoModel.js';
 
 
 export const crearEventos = async (req, res) => {

@@ -1,3 +1,4 @@
+//public/js/evento.js
 document.addEventListener('DOMContentLoaded', () => {
   // CREAR EVENTO
   const btnCrear = document.getElementById("btnCrearEvento");

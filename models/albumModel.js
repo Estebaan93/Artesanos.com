@@ -109,8 +109,6 @@ export const eliminarAlbumPorId = async (id_album) => {
 };
 
 
-
-
 export const buscarAlbumesPorTituloOEtiqueta = async (termino) => {
   const [rows] = await pool.query(
     `
