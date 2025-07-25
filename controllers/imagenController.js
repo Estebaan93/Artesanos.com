@@ -158,3 +158,5 @@ export const eliminarImagenDefinitivamenteCtrl = async (req, res) => {
     res.status(500).send("Error interno", error);
   }
 };
+
+

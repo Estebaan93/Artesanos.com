@@ -296,3 +296,46 @@ export const eliminarImagenDefinitivamente = async (id_imagen) => {
   await pool.query('DELETE FROM imagen WHERE id_imagen = ?', [id_imagen]);
   return true;
 };
+
+export async function obtenerImagenesDeMejoresAmigos(idUsuarioLogueado, limit = 50) {
+  // 1) IDs de amigos activos
+  const [rowsAmigos] = await pool.query(
+    `SELECT amigo_id
+     FROM amigos
+     WHERE id_usuario = ? AND estado = 1`,
+    [idUsuarioLogueado]
+  );
+  const idsAmigos = rowsAmigos.map(r => r.amigo_id);
+  if (!idsAmigos.length) return [];
+
+  // 2) Solo visibilidad = 'mejores_amigos'
+  const [imagenes] = await pool.query(`
+    SELECT i.id_imagen, i.imagen AS url, i.titulo, i.fecha AS fecha_subida,
+           u.nombre, u.apellido
+    FROM imagen i
+    JOIN album a   ON a.id_album   = i.id_album
+    JOIN usuario u ON u.id_usuario = a.id_usuario
+    WHERE i.estado = 1
+      AND a.id_usuario IN (?)
+      AND i.visibilidad = 'mejores_amigos'
+    ORDER BY i.fecha DESC
+    LIMIT ?
+  `, [idsAmigos, limit]);
+
+  return imagenes;
+}
+
+export async function obtenerImagenesPublicas(limit = 50) {
+  const [rows] = await pool.query(`
+    SELECT i.id_imagen, i.imagen AS url, i.titulo, i.fecha AS fecha_subida,
+           u.nombre, u.apellido
+    FROM imagen i
+    JOIN album a   ON a.id_album   = i.id_album
+    JOIN usuario u ON u.id_usuario = a.id_usuario
+    WHERE i.estado = 1
+      AND i.visibilidad = 'publico'
+    ORDER BY i.fecha DESC
+    LIMIT ?
+  `, [limit]);
+  return rows;
+}

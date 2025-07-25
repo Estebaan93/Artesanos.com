@@ -1,41 +1,73 @@
-//controllers/homeController.js
-import { obtenerAlbumesPublicosConImagenesYComentarios } from "../models/albumModel.js";
-import { obtenerEventosPublicados } from "../models/eventoModel.js"; // Opcional, según tu modelo
+// controllers/homeController.js
+import { obtenerEventosPublicados } from "../models/eventoModel.js";
+import {
+  obtenerImagenesDeMejoresAmigos,
+  obtenerImagenesPublicas
+} from "../models/imagenModel.js";
+import { obtenerComentariosDeImagen } from "../models/comentarioModel.js";
 
 export const homeLogueado = async (req, res) => {
   try {
     const usuario = req.session.usuario;
-    // 1. Traer eventos destacados (puede ser vacío si no hay eventos aún)
-    const ahora = new Date();
-    const eventos = await obtenerEventosPublicados(); // o [] si no usás eventos aún
-     const eventosFiltrados = eventos
-      .filter(evento => !evento.requiere_login || req.session.usuario)
-      .map(evento => {
-        const fechaEvento = new Date(evento.fecha_evento);
-        if (evento.horario) {
-          const [hora, minuto] = evento.horario.split(':');
-          fechaEvento.setHours(parseInt(hora), parseInt(minuto), 0, 0);
+    const ahora   = new Date();
+
+    // 1. Eventos destacados
+    const eventos = await obtenerEventosPublicados();
+    const eventosFiltrados = eventos
+      .filter(ev => !ev.requiere_login || usuario)
+      .map(ev => {
+        const fechaEv = new Date(ev.fecha_evento);
+        if (ev.horario) {
+          const [h, m] = ev.horario.split(":").map(Number);
+          fechaEv.setHours(h, m, 0, 0);
         } else {
-          fechaEvento.setHours(0, 0, 0, 0);
+          fechaEv.setHours(0, 0, 0, 0);
         }
-
-        evento.finalizado = fechaEvento <= ahora;
-
-        // 📌 Imagen fija para todos los eventos
-        evento.imagen = "/src/img/calendario.jpg";
-
-        return evento;
+        ev.finalizado = fechaEv <= ahora;
+        ev.imagen = ev.imagen || "/src/img/calendario.jpg";
+        return ev;
       });
 
+    // 2. Imágenes de tus mejores amigos
+    const rawMejores = await obtenerImagenesDeMejoresAmigos(usuario.id_usuario, 20);
+    const imagenesMejoresAmigos = await Promise.all(
+      rawMejores.map(async img => {
+        const comentarios = await obtenerComentariosDeImagen(img.id_imagen);
+        return {
+          ...img,
+          comentarios,
+          fechaFormateada: new Date(img.fecha_subida).toLocaleDateString("es-AR", {
+            day:   "2-digit",
+            month: "2-digit",
+            year:  "numeric"
+          })
+        };
+      })
+    );
 
-    // 2. Traer álbumes públicos de la comunidad, EXCLUYENDO los del usuario logueado
-    const albumesPublicos = await obtenerAlbumesPublicosConImagenesYComentarios(usuario.id_usuario);
+    // 3. Imágenes públicas de la comunidad
+    const rawPublicas = await obtenerImagenesPublicas(50);
+    const imagenesPublicas = await Promise.all(
+      rawPublicas.map(async img => {
+        const comentarios = await obtenerComentariosDeImagen(img.id_imagen);
+        return {
+          ...img,
+          comentarios,
+          fechaFormateada: new Date(img.fecha_subida).toLocaleDateString("es-AR", {
+            day:   "2-digit",
+            month: "2-digit",
+            year:  "numeric"
+          })
+        };
+      })
+    );
 
-    // 3. Renderizar home
+    // 4. Renderizar vista
     res.render("logueado/home", {
       usuario,
       eventos: eventosFiltrados,
-      albumesPublicos
+      imagenesMejoresAmigos,
+      imagenesPublicas
     });
   } catch (err) {
     console.error("Error en homeLogueado:", err);

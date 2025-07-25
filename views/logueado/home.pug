@@ -1,4 +1,4 @@
-//-views/logueado/home.pug
+//- views/logueado/home.pug
 extends ../layouts/logueado
 
 block headExtra 
@@ -18,7 +18,7 @@ block content
           p= evento.descripcion
           if evento.finalizado
             span.etiqueta-finalizado(
-              style="color: white; background-color: #dc3545; padding: 2px 8px; border-radius: 8px; display: inline-block; margin-top: 5px;"
+              style="color:white; background-color:#dc3545; padding:2px 8px; border-radius:8px; display:inline-block; margin-top:5px;"
             ) Finalizado
           else
             button(
@@ -34,43 +34,76 @@ block content
   else
     p.mensaje-alerta No hay eventos para mostrar.
 
-  // SECCIÓN ÁLBUMES PÚBLICOS DE USUARIOS
-  h2.homeLogueado Álbumes públicos de la comunidad
-
-  if albumesPublicos && albumesPublicos.length
+  // SECCIÓN IMÁGENES DE TUS MEJORES AMIGOS
+  // h2.homeLogueado Imágenes de tus mejores amigos
+  if imagenesMejoresAmigos && imagenesMejoresAmigos.length
     .home-cards-container
-      each album in albumesPublicos
+      each img in imagenesMejoresAmigos
         .home-card
-          h3
-            | #{album.titulo} 
-            small por 
-              a(href=`/portafolio/${album.autor_id}`)= album.autor_nombre + " " + album.autor_apellido
-          if !album.imagenes || album.imagenes.length === 0
-            p Sin imágenes públicas.
-          else
-            .imagenes-grid
-              each img in album.imagenes
-                - const srcImg = img.imagen.startsWith('http') ? img.imagen : `/img/obras/${img.imagen}`
-                .img-con-comentarios
-                  img.imagen-clickable(
-                    src=srcImg,
-                    alt=img.titulo,
-                    data-usuario=`${album.autor_nombre} ${album.autor_apellido}`,
-                    data-titulo=img.titulo
-                  )
-                  if img.comentarios && img.comentarios.length
-                    ul.comentarios
-                      each com in img.comentarios
-                        li
-                          strong= com.usuario
-                          | : #{com.descripcion}
-                  form(method="POST", action=`/obras/${img.id_imagen}/comentarios`, class="form-comentar")
-                    textarea(name="descripcion" required placeholder="Agregar un comentario…")
-                    button(type="submit") Comentar
+          img(
+            src= img.url.startsWith('http') ? img.url : `/img/obras/${img.url}`,
+            alt= img.titulo
+          )
+          h4= img.titulo
+          small Subido por #{img.nombre} #{img.apellido}
+          if img.descripcion
+            p= img.descripcion
+          p Fecha: #{img.fechaFormateada}
+
+          // Lista de comentarios
+          ul.comentarios
+            if img.comentarios && img.comentarios.length
+              each com in img.comentarios
+                li
+                  strong= com.usuario
+                  |  #{com.descripcion}
+            else
+              li Sin comentarios.
+
+          // Formulario de comentario (solo si está logueado)
+          if usuario
+            form.form-comentar(method="post", action=`/obras/${img.id_imagen}/comentarios`)
+              textarea(name="descripcion" required placeholder="Agregar un comentario…")
+              button(type="submit") Comentar
   else
-    p.mensaje-alerta No hay álbumes públicos en este momento.
-  
+    p.mensaje-alerta No hay imágenes de tus mejores amigos recientemente.
+
+  // SECCIÓN IMÁGENES PÚBLICAS DE LA COMUNIDAD
+  // h2.homeLogueado Imágenes públicas de la comunidad
+  if imagenesPublicas && imagenesPublicas.length
+    .home-cards-container
+      each img in imagenesPublicas
+        .home-card
+          img(
+            src= img.url.startsWith('http') ? img.url : `/img/obras/${img.url}`,
+            alt= img.titulo
+          )
+          h4= img.titulo
+          small Subido por #{img.nombre} #{img.apellido}
+          if img.descripcion
+            p= img.descripcion
+          p Fecha: #{img.fechaFormateada}
+
+          // Lista de comentarios
+          ul.comentarios
+            if img.comentarios && img.comentarios.length
+              each com in img.comentarios
+                li
+                  strong= com.usuario
+                  |  #{com.descripcion}
+            else
+              li Sin comentarios.
+
+          // Formulario de comentario (solo si está logueado)
+          if usuario
+            form.form-comentar(method="post", action=`/obras/${img.id_imagen}/comentarios`)
+              textarea(name="descripcion" required placeholder="Agregar un comentario…")
+              button(type="submit") Comentar
+  else
+    p.mensaje-alerta No hay imágenes públicas disponibles.
+
+  // Pasar datos al cliente y cargar scripts
   script.
-    window.usuario= !{JSON.stringify(usuario)};
+    window.usuario = !{JSON.stringify(usuario)}
   script(src="/js/modalImagen.js")
   script(src="/js/homeIndex.js")
