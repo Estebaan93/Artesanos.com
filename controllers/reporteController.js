@@ -1,9 +1,4 @@
-import {
-  crearReporte,
-  actualizarEstadoReporte,
-  obtenerReportesDeUsuario,
-  obtenerIdImagenDesdeReporte
-} from "../models/reporteModel.js";
+import { crearReporte, actualizarEstadoReporte, obtenerReportesDeUsuario, obtenerIdImagenDesdeReporte} from "../models/reporteModel.js";
 import { eliminarImagenPorId } from "../models/imagenModel.js";
 
 export const enviarReporte = async (req, res) => {
