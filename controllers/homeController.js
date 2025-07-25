@@ -1,9 +1,6 @@
 // controllers/homeController.js
 import { obtenerEventosPublicados } from "../models/eventoModel.js";
-import {
-  obtenerImagenesDeMejoresAmigos,
-  obtenerImagenesPublicas
-} from "../models/imagenModel.js";
+import { obtenerImagenesDeMejoresAmigos, obtenerImagenesPublicas} from "../models/imagenModel.js";
 import { obtenerComentariosDeImagen } from "../models/comentarioModel.js";
 
 export const homeLogueado = async (req, res) => {

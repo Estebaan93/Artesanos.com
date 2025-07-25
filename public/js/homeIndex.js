@@ -1,6 +1,6 @@
 //public/js/homeIndex.js
 document.addEventListener("DOMContentLoaded", () => {
-  // ========== Comentarios en imágenes ==========
+  // Comentarios en imágenes 
   document.querySelectorAll("form.form-comentar").forEach(form => {
     form.addEventListener("submit", async function(e) {
       e.preventDefault();
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // ========== Inscripción a eventos ==========
+  //  Inscripción a eventos 
   document.querySelectorAll(".btnInscribirseHome").forEach(btn => {
     btn.addEventListener("click", function() {
       // Obtener info del evento desde data-*
