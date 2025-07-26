@@ -4,17 +4,23 @@ block head
   link(rel="stylesheet", href="/css/explorerPublico.css")
 
 block content
-  h1 Portafolios Públicos
+  h1 Explorar imágenes públicas
 
-  if !usuarios || usuarios.length === 0
-    p No hay portafolios públicos disponibles.
+  if !imagenes || imagenes.length === 0
+    p No hay imágenes públicas disponibles.
   else
-    ul.portafolios-lista
-      each usuario in usuarios
-        li.portafolio-item
-          a(href=`/portafolio/${usuario.id_usuario}`)
-            img(
-              src=usuario.avatarUrl && usuario.avatarUrl.startsWith('http') ? usuario.avatarUrl : `/img/perfiles/${usuario.avatarUrl || 'default.png'}`,
-              alt=`Avatar de ${usuario.nombre} ${usuario.apellido}`,
-            )
-            | #{usuario.nombre} #{usuario.apellido}
+    .imagenes-grid
+      each img in imagenes
+        - const srcImg = img.imagen.startsWith('http') ? img.imagen : `/img/obras/${img.imagen}`
+        .imagen-card
+          img.imagen-clickable(src=srcImg, alt=img.titulo)
+          h4= img.titulo
+          p 
+          | Autor: 
+          a(href=`/portafolio/${img.id_usuario}`) #{img.nombre} #{img.apellido}
+          if img.comentarios && img.comentarios.length
+            ul.comentarios
+              each c in img.comentarios
+                li
+                  strong= `${c.nombre} ${c.apellido}: `
+                  | #{c.descripcion}

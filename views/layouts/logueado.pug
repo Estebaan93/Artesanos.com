@@ -51,6 +51,8 @@ html
       block content
     footer
       p © #{new Date().getFullYear()} Artesanos.com
+      //Boton para subir
+      button#scrollTopBtn(type="button") ↑
     script.
       window.usuarioId = !{JSON.stringify(usuario.id_usuario)};
     script(src="/socket.io/socket.io.js") 

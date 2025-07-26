@@ -110,4 +110,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Ampliar imagen al hacer clic
+const modal = document.getElementById("modal-imagen");
+const modalImg = document.getElementById("modal-img");
+const modalTitulo = document.getElementById("modal-titulo");
+const modalUsuario = document.getElementById("modal-usuario");
+const cerrarModal = document.getElementById("cerrar-modal");
+
+document.querySelectorAll(".imagen-ampliable").forEach(img => {
+  img.addEventListener("click", () => {
+    modalImg.src = img.src;
+    modalImg.alt = img.alt;
+    modalTitulo.textContent = img.dataset.titulo || "";
+    modalUsuario.textContent = img.dataset.autor ? `Autor: ${img.dataset.autor}` : "";
+    modal.style.display = "flex";
+  });
+});
+
+cerrarModal.addEventListener("click", () => {
+  modal.style.display = "none";
+});
+
+modal.addEventListener("click", (e) => {
+  if (e.target === modal) modal.style.display = "none";
+});
+
 });

@@ -2,6 +2,7 @@ extends ../layouts/noLogueado
 
 block head
   link(rel="stylesheet", href="/css/explorerPublico.css")
+
 block content
   h1 Portafolio público de #{usuario.nombre} #{usuario.apellido}
 
@@ -16,12 +17,15 @@ block content
         .imagenes-grid
           each img in album.imagenes
             - const srcImg = img.imagen.startsWith('http') ? img.imagen : `/img/obras/${img.imagen}`
-            img.imagen-clickable(
-              src=srcImg,
-              alt=img.titulo,
-              data-usuario=`${usuario.nombre} ${usuario.apellido}`,
-              data-titulo=img.titulo
-            )
+            .imagen-card
+              img.imagen-clickable(src=srcImg, alt=img.titulo)
+              h4= img.titulo
+              if img.comentarios && img.comentarios.length
+                ul.comentarios
+                  each c in img.comentarios
+                    li
+                      strong= `${c.nombre} ${c.apellido}: `
+                      | #{c.descripcion}
 
   // Modal para mostrar info de la imagen
   div#modal-imagen

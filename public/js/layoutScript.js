@@ -1,4 +1,6 @@
+//public/js/layoutScript.js
 document.addEventListener("DOMContentLoaded", () => {
+  const btn= document.getElementById("scrollTopBtn");
   const modalLogin = document.getElementById("modal-login");
   const modalRegister = document.getElementById("modal-registrarse");
   const btnLogin = document.getElementById("btn-login");
@@ -9,6 +11,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const loginForm = modalLogin ? modalLogin.querySelector("form") : null;
   const registerForm = document.getElementById("form-registro");
+
+    // -------- BOTÓN SCROLL TO TOP --------
+  const scrollBtn = document.getElementById("scrollTopBtn");
+  if (scrollBtn) {
+    window.addEventListener("scroll", () => {
+      scrollBtn.style.display = window.scrollY > 300 ? "block" : "none";
+    });
+
+    scrollBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
 
   // Abrir modal login + mostrar overlay
   btnLogin?.addEventListener("click", (e) => {

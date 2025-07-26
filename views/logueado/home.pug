@@ -34,49 +34,17 @@ block content
   else
     p.mensaje-alerta No hay eventos para mostrar.
 
-  // SECCIÓN IMÁGENES DE TUS MEJORES AMIGOS
-  // h2.homeLogueado Imágenes de tus mejores amigos
-  if imagenesMejoresAmigos && imagenesMejoresAmigos.length
-    .home-cards-container
-      each img in imagenesMejoresAmigos
-        .home-card
-          img(
-            src= img.url.startsWith('http') ? img.url : `/img/obras/${img.url}`,
-            alt= img.titulo
-          )
-          h4= img.titulo
-          small Subido por #{img.nombre} #{img.apellido}
-          if img.descripcion
-            p= img.descripcion
-          p Fecha: #{img.fechaFormateada}
-
-          // Lista de comentarios
-          ul.comentarios
-            if img.comentarios && img.comentarios.length
-              each com in img.comentarios
-                li
-                  strong= com.usuario
-                  |  #{com.descripcion}
-            else
-              li Sin comentarios.
-
-          // Formulario de comentario (solo si está logueado)
-          if usuario
-            form.form-comentar(method="post", action=`/obras/${img.id_imagen}/comentarios`)
-              textarea(name="descripcion" required placeholder="Agregar un comentario…")
-              button(type="submit") Comentar
-  else
-    p.mensaje-alerta No hay imágenes de tus mejores amigos recientemente.
-
   // SECCIÓN IMÁGENES PÚBLICAS DE LA COMUNIDAD
-  // h2.homeLogueado Imágenes públicas de la comunidad
   if imagenesPublicas && imagenesPublicas.length
+    h2.homeLogueado Imágenes públicas de la comunidad
     .home-cards-container
       each img in imagenesPublicas
         .home-card
-          img(
+          img.imagen-ampliable(
             src= img.url.startsWith('http') ? img.url : `/img/obras/${img.url}`,
-            alt= img.titulo
+            alt= img.titulo,
+            data-titulo=img.titulo,
+            data-autor= `${img.nombre} ${img.apellido}`
           )
           h4= img.titulo
           small Subido por #{img.nombre} #{img.apellido}
@@ -96,13 +64,55 @@ block content
 
           // Formulario de comentario (solo si está logueado)
           if usuario
-            form.form-comentar(method="post", action=`/obras/${img.id_imagen}/comentarios`)
-              textarea(name="descripcion" required placeholder="Agregar un comentario…")
+            form.form-comentar.formulario-comentario(method="post", action=`/obras/${img.id_imagen}/comentarios`)
+              textarea(name="descripcion", required, placeholder="Agregar un comentario…")
               button(type="submit") Comentar
   else
     p.mensaje-alerta No hay imágenes públicas disponibles.
 
-  // Pasar datos al cliente y cargar scripts
+  // SECCIÓN IMÁGENES DE TUS MEJORES AMIGOS
+  if imagenesMejoresAmigos && imagenesMejoresAmigos.length
+    h2.homeLogueado Imágenes de tus mejores amigos
+    .home-cards-container
+      each img in imagenesMejoresAmigos
+        .home-card
+          img.imagen-ampliable(
+            src= img.url.startsWith('http') ? img.url : `/img/obras/${img.url}`,
+            alt= img.titulo,
+            data-titulo=img.titulo,
+            data-autor= `${img.nombre} ${img.apellido}`
+          )
+          h4= img.titulo
+          small Subido por #{img.nombre} #{img.apellido}
+          if img.descripcion
+            p= img.descripcion
+          p Fecha: #{img.fechaFormateada}
+
+          ul.comentarios
+            if img.comentarios && img.comentarios.length
+              each com in img.comentarios
+                li
+                  strong= com.usuario
+                  |  #{com.descripcion}
+            else
+              li Sin comentarios.
+
+          if usuario
+            form.form-comentar.formulario-comentario(method="post", action=`/obras/${img.id_imagen}/comentarios`)
+              textarea(name="descripcion", required, placeholder="Agregar un comentario…")
+              button(type="submit") Comentar
+  else
+    p.mensaje-alerta No hay imágenes de tus mejores amigos recientemente.
+
+  // MODAL DE IMAGEN
+  #modal-imagen
+    .modal-contenido
+      button#cerrar-modal ×
+      img#modal-img(src="", alt="")
+      h2#modal-titulo
+      p#modal-usuario
+
+  // PASAR USUARIO Y SCRIPTS
   script.
     window.usuario = !{JSON.stringify(usuario)}
   script(src="/js/modalImagen.js")
