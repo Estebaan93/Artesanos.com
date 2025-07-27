@@ -212,7 +212,7 @@ footer {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.7);
   padding: 16px 24px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
   z-index: 1000;
@@ -609,4 +609,14 @@ body *:not(input):not(textarea):not([contenteditable]) {
 #scrollTopBtn:hover {
   background-color: #555;
   transform: scale(1.1);
+}
+
+/*==============Link inicio==================*/
+.link-inicio {
+  text-decoration: none;
+  color: inherit;
+}
+
+.link-inicio:hover {
+  text-decoration: underline;
 }

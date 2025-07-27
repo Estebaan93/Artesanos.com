@@ -17,7 +17,7 @@ block content
           h4= img.titulo
           p 
           | Autor: 
-          a(href=`/portafolio/${img.id_usuario}`) #{img.nombre} #{img.apellido}
+          a.autor-link(href=`/portafolio/${img.id_usuario}`) #{img.nombre} #{img.apellido}
           if img.comentarios && img.comentarios.length
             ul.comentarios
               each c in img.comentarios
