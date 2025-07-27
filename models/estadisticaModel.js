@@ -43,3 +43,13 @@ export const contarReportesRecibidos = async (id_usuario) => {
   );
   return rows[0].cantidad || 0;
 };
+
+//Contar eventos en lo que se esta inscripto
+export const contarEventosUsuario= async (id_usuario)=>{
+  const [result]= await pool.query(`
+    SELECT COUNT(*) AS cantidad
+    FROM evento_usuario
+    WHERE id_usuario = ?
+    `, [id_usuario]);
+    return result[0].cantidad || 0;
+}

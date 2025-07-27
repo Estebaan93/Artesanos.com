@@ -1,5 +1,4 @@
-
-////index.js
+//index.js
 import express from 'express';
 import { fileURLToPath } from 'url';
 import usuarioRoutes from './routes/usuarioRoutes.js';
@@ -33,9 +32,6 @@ import fs from 'fs';
     fs.mkdirSync(dir, { recursive: true });
   }
 });
-
-
-
 
 
 io.on('connection',(socket)=>{
@@ -106,9 +102,6 @@ app.use(solicitudRoutes);
 app.use('/perfil', perfilRoutes);
 app.use('/reportes',reporteRoutes);
 app.use('/', eventoRoutes);
-
-
-
 
 
 // Iniciar servidor

@@ -10,10 +10,43 @@ html
       h1 Bienvenido
       nav
         a(href="/home") Inicio
+        a(href="#" id="btn-login") Iniciar sesión
         
     main
       block content
 
       footer
         p © #{new Date().getFullYear()} Artesanos.com
-      script(src="/js/layoutScript.js")  
+
+      // Modal de Login
+      div#modal-login
+        div.modal-content
+          h2 Iniciar Sesión
+          form(action="/login" method="post")
+            input(type="email" name="email" placeholder="Correo electrónico" required)
+            input(type="password" name="password" placeholder="Contraseña" required)
+            button(type="submit") Entrar
+          p ¿No tienes cuenta?
+          button(id="btn-register") Registrarse
+          button(id="btn-close") Cerrar
+
+          // Modal de registro
+      div#modal-registrarse(style="display:none")
+        div.modal-content
+          span#btn-reg(style="cursor:pointer; float:right")
+          h2 Crear cuenta
+          form#form-registro(enctype="multipart/form-data")
+            input(type="text" name="nombre" placeholder="Nombre" required)
+            input(type="text" name="apellido" placeholder="Apellido" required)
+            input(type="email" name="email" placeholder="Correo electrónico" required)
+            input(type="password" name="password" placeholder="Contraseña" required)
+            input(type="file" name="img_perfil" accept="image/*")
+            input(type="hidden" name="estado" value="1")
+            button(type="submit") Crear cuenta
+
+
+      script(src="/js/layoutScript.js")
+      script(src="https://cdn.jsdelivr.net/npm/sweetalert2@11")
+      script(src="/socket.io/socket.io.js")
+      script(src="/js/notificaciones.js")
+  

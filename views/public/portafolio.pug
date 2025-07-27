@@ -1,3 +1,4 @@
+//-views/public/portafolio.pug
 extends ../layouts/noLogueado
 
 block head
@@ -10,7 +11,7 @@ block content
     p No hay álbumes públicos para mostrar.
   else
     each album in albumes
-      h2= album.titulo
+      h2.titulo-album= album.titulo
       if !album.imagenes || album.imagenes.length === 0
         p Sin imágenes públicas.
       else
@@ -18,7 +19,12 @@ block content
           each img in album.imagenes
             - const srcImg = img.imagen.startsWith('http') ? img.imagen : `/img/obras/${img.imagen}`
             .imagen-card
-              img.imagen-clickable(src=srcImg, alt=img.titulo)
+              img.imagen-clickable(
+                src=srcImg,
+                alt=img.titulo,
+                data-titulo=img.titulo,
+                data-usuario=`${img.nombre} ${img.apellido}`
+              )
               h4= img.titulo
               if img.comentarios && img.comentarios.length
                 ul.comentarios
@@ -27,11 +33,15 @@ block content
                       strong= `${c.nombre} ${c.apellido}: `
                       | #{c.descripcion}
 
-  // Modal para mostrar info de la imagen
-  div#modal-imagen
-    div.modal-contenido
+  // Modal de imagen
+  #modal-imagen
+    .modal-contenido
       button#cerrar-modal ×
       h3#modal-titulo
       p#modal-usuario
 
+  script.
+    window.usuario = null; // visitante
+
   script(src="/js/modalImagen.js")
+

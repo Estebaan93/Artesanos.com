@@ -32,6 +32,13 @@ body *:not(input):not(textarea):not([contenteditable]) {
 }
 
 /* --- Portafolio Público Individual --- */
+.titulo-album {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1.8em;
+  color: white;
+}
 .imagenes-grid {
   display: flex;
   flex-wrap: wrap;
