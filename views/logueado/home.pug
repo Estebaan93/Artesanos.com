@@ -57,7 +57,7 @@ block content
             if img.comentarios && img.comentarios.length
               each com in img.comentarios
                 li
-                  strong= com.usuario
+                  strong= `${com.usuario}:`
                   |  #{com.descripcion}
             else
               li Sin comentarios.

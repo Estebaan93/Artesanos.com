@@ -16,6 +16,7 @@ body {
   min-height: 100vh;
   background: url('/src/img/artesanoIndex.jpg');
   background-size: cover;
+  background-attachment: fixed;
 }
 
 main {

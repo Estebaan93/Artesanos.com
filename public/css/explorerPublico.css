@@ -1,5 +1,11 @@
 /*public/css/explorerPublico.css*/
 /* --- General --- */
+body{
+  background: url('/src/img/artesanoIndex.jpg');
+  background-attachment: fixed;
+  background-size: cover;
+}
+
 h1 {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;

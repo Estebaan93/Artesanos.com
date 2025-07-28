@@ -1,7 +1,9 @@
 /* Fuente y fondo */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #662697, #ffeaff);
+  background: url('/src/img/artesanoIndex.jpg');
+  background-attachment: fixed;
+  background-size: cover;
   margin: 0;
   padding: 0;
   color: #4b4b4b;
@@ -16,7 +18,7 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: rgba(255 255 255 / 0.85);
+  background: rgba(255, 255, 255, 0);
   z-index: -1;
 }
 
@@ -24,13 +26,13 @@ body::before {
 .perfil-container {
   max-width: 600px;
   margin: 60px auto 40px;
-  background: rgba(255, 255, 255, 0.95); /* más blanco y visible */
+  background: rgba(255, 255, 255, 0.35); /* más blanco y visible */
   border-radius: 18px;
   box-shadow: 0 12px 28px rgba(102, 71, 176, 0.25); /* sombra más profunda con tono violeta */
   padding: 40px 50px 50px;
   position: relative;
   z-index: 1;
-
+  backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -47,7 +49,7 @@ button.cerrar {
   font-weight: 900;
   cursor: pointer;
   align-self: flex-end; /* para que quede a la derecha */
-  color: #aaa;
+  color: #444343;
   transition: color 0.2s ease;
 }
 button.cerrar:hover {
