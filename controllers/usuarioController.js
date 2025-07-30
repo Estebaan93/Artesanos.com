@@ -59,7 +59,9 @@ export const crearUsuario = async (req, res) => {
       estado = 1;
     }
 
-    const avatarUrl = req.file?.filename || 'default.png';
+    const avatarUrl = req.file?.filename
+      ? `/img/perfiles/${req.file.filename}`
+      : '/img/perfiles/default.png';   
 
     if (!nombre || !apellido || !email || !password) {
       return res.status(400).json({ error: 'Faltan campos obligatorios' });

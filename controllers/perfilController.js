@@ -116,19 +116,25 @@ export const actualizarPerfil = async (req, res) => {
       passwordHasheada = await bcrypt.hash(nuevaVal, 10);
     }
 
-    // ACTUALIZAR AVATAR (si se subió uno nuevo)
-    let avatarUrlFinal = usuarioBD.avatarUrl;
-    const archivoAvatar = req.file;
+   // ACTUALIZAR AVATAR (si se subió uno nuevo)
+let avatarUrlFinal = usuarioBD.avatarUrl;
+const archivoAvatar = req.file;
 
-    if (archivoAvatar) {
-      avatarUrlFinal = `/img/perfiles/${archivoAvatar.filename}`;
-      if (usuarioBD.avatarUrl && usuarioBD.avatarUrl.startsWith('/img/perfiles/')) {
-        const rutaAnterior = path.join('public', usuarioBD.avatarUrl);
-        if (fs.existsSync(rutaAnterior)) {
-          fs.unlinkSync(rutaAnterior);
-        }
-      }
+if (archivoAvatar) {
+  avatarUrlFinal = `/img/perfiles/${archivoAvatar.filename}`;
+
+  const esPersonalizado = usuarioBD.avatarUrl &&
+    usuarioBD.avatarUrl.startsWith('/img/perfiles/') &&
+    !usuarioBD.avatarUrl.includes('default.png'); // evita borrar default
+
+  if (esPersonalizado) {
+    const rutaAnterior = path.join('public', usuarioBD.avatarUrl);
+    if (fs.existsSync(rutaAnterior)) {
+      fs.unlinkSync(rutaAnterior);
     }
+  }
+}
+
 
     // ARMAR OBJETO DE ACTUALIZACIÓN
     const datosActualizados = {

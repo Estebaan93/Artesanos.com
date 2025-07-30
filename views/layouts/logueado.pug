@@ -34,9 +34,8 @@ html
         //Menu desplegable
         .perfil-dropdown
           .avatar-container
-            - const avatar = usuario.avatarUrl?.startsWith('http') ? usuario.avatarUrl : `${usuario.avatarUrl || 'default.png'}`
             a(href="/perfil")
-              img.avatar(src=avatar alt="avatar")
+              img.avatar(src=usuario.avatarUrl alt="avatar")
             ul.menu
               li: a(href="/perfil") Perfil
               li: a(href="/estadisticas") Estadisticas
