@@ -114,8 +114,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-});
+//Abrir desde la notificacion el modal de la img
+const urlParams= new URLSearchParams(window.location.search);
+const idImagen= urlParams.get("img");
+if (idImagen) {
+  const miniatura = document.querySelector(`.obra-miniatura[data-id="${idImagen}"]`);
+    if (miniatura) {
+      miniatura.scrollIntoView({ behavior: "smooth", block: "center" });
+      setTimeout(() => {
+        miniatura.click();
+        // OPCIONAL: limpiar la URL visual
+        history.replaceState(null, '', window.location.pathname);
+      }, 400);
+    }
+  }
+}); 
 
+//Boton reporta
 document.querySelectorAll('.btn-reportar').forEach(btn => {
   btn.addEventListener('click', async () => {
     const id_imagen = btn.dataset.id;

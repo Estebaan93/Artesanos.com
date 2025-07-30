@@ -77,10 +77,11 @@ document.addEventListener("DOMContentLoaded", () => {
         html += `<h4>📁 Álbumes</h4><ul>`;
         html += albumes
           .map((a) => {
+            const autor = a.autor ? ` <span style="color:#555;">por ${a.autor}</span>` : '';
             if (a.tipo === "espejo") {
-              return `<li><a href="/albumes/espejo/${a.id_usuario}">${a.titulo}</a></li>`;
+              return `<li><a href="/albumes/espejo/${a.id_usuario}">${a.titulo}</a>${autor}</li>`;
             } else {
-              return `<li><a href="/albumes/${a.id_album}">${a.titulo}</a></li>`;
+              return `<li><a href="/albumes/${a.id_album}">${a.titulo}</a>${autor}</li>`;
             }
           })
           .join("");
@@ -92,10 +93,11 @@ document.addEventListener("DOMContentLoaded", () => {
         html += `<h4>🖼️ Imágenes</h4><ul>`;
         html += imagenes
           .map((i) => {
+            const autor = i.autor ? ` <span style="color:#555;">por ${i.autor}</span>` : '';
             if (i.tipo === "espejo") {
-              return `<li><a href="/albumes/espejo/${i.id_usuario}">Imagen: ${i.titulo}</a></li>`;
+              return `<li><a href="/albumes/espejo/${i.id_usuario}">Imagen: ${i.titulo}</a>${autor}</li>`;
             } else {
-              return `<li><a href="/albumes/${i.id_album}">Imagen: ${i.titulo}</a></li>`;
+              return `<li><a href="/albumes/${i.id_album}">Imagen: ${i.titulo}</a>${autor}</li>`;
             }
           })
           .join("");

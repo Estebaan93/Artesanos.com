@@ -95,7 +95,11 @@ export const verAlbum = async (req, res) => {
       img.etiquetas = await obtenerEtiquetasPorImagen(img.id_imagen);
     }
 
-    res.render("albumes/detalle", { album, imagenes });
+    res.render("albumes/detalle", { 
+      album, 
+      imagenes,
+      esPropietario: album.id_usuario===id_usuario_consultante 
+    });
   } catch (error) {
     console.error("Error en verAlbum:", error);
     res.status(500).send("Error al obtener el álbum");

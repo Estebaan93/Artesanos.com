@@ -112,8 +112,9 @@ export const eliminarAlbumPorId = async (id_album) => {
 export const buscarAlbumesPorTituloOEtiqueta = async (termino) => {
   const [rows] = await pool.query(
     `
-    SELECT DISTINCT a.id_album, a.titulo, a.fecha
+    SELECT DISTINCT a.id_album, a.titulo, a.fecha, a.id_usuario AS autor_id, u.nombre AS autor_nombre, u.apellido AS autor_apellido
     FROM album a
+    JOIN usuario u ON a.id_usuario= u.id_usuario
     LEFT JOIN imagen i ON i.id_album = a.id_album
     LEFT JOIN imagen_etiqueta ie ON ie.id_imagen = i.id_imagen
     LEFT JOIN etiqueta e ON e.id_etiqueta = ie.id_etiqueta
@@ -122,25 +123,36 @@ export const buscarAlbumesPorTituloOEtiqueta = async (termino) => {
     `,
     [`%${termino}%`, `%${termino}%`]
   );
-  return rows;
+  return rows.map(a=>({
+    ...a,
+    autor: `${a.autor_nombre} ${a.autor_apellido}` 
+  }));
 };
 
 export const buscarImagenesPorTituloOEtiqueta = async (termino) => {
   const [rows] = await pool.query(
     `
-    SELECT DISTINCT i.id_imagen, i.titulo, i.id_album, i.visibilidad, i.imagen,
-           a.id_usuario AS autor_id, i.fecha
+    SELECT DISTINCT 
+      i.id_imagen, i.titulo, i.id_album, i.visibilidad, i.imagen, i.fecha, a.id_usuario AS autor_id, u.nombre AS autor_nombre, u.apellido AS autor_apellido
     FROM imagen i
     JOIN album a ON a.id_album = i.id_album
+    JOIN usuario u ON a.id_usuario = u.id_usuario
     LEFT JOIN imagen_etiqueta ie ON ie.id_imagen = i.id_imagen
     LEFT JOIN etiqueta e ON e.id_etiqueta = ie.id_etiqueta
-    WHERE (i.titulo LIKE ? OR e.nombre LIKE ?) AND a.estado = 1
+    WHERE (i.titulo LIKE ? OR e.nombre LIKE ?)
+      AND a.estado = 1
+      AND i.estado = 1
     ORDER BY i.fecha DESC
     `,
     [`%${termino}%`, `%${termino}%`]
   );
-  return rows;
+
+  return rows.map(i => ({
+    ...i,
+    autor: `${i.autor_nombre} ${i.autor_apellido}`
+  }));
 };
+
 
 //extra PAPELERA
 
