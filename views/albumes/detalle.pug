@@ -4,7 +4,8 @@ block headExtra
   link(rel="stylesheet", href="/css/albumDetalle.css")
 block content
   h2 Álbum: #{album.titulo}
-  a.btn-subir-obra(href=`/albumes/${album.id_album}/obras/nueva`) Subir obra
+  if esPropietario
+    a.btn-subir-obra(href=`/albumes/${album.id_album}/obras/nueva`) Subir obra
 
 
   if imagenes.length
@@ -59,7 +60,8 @@ block content
           form.form-comentario(data-id=img.id_imagen)
             textarea(name="descripcion", placeholder="Escribí un comentario...", required rows="2")
             button.btn-comentar(type="submit") Comentar
-            button.btn-eliminar-imagen(type="button", data-id=img.id_imagen) 🗑️
+            if esPropietario
+              button.btn-eliminar-imagen(type="button", data-id=img.id_imagen) 🗑️
 
 
           // Contenedor para mostrar comentarios
