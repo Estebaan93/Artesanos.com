@@ -79,29 +79,48 @@ document.addEventListener("DOMContentLoaded", () => {
         marcarComoLeida(notif.id_notificacion, li);
       });
     } else if (notif.tipo === "comentario") {
-      console.log("Renderizando notificación de comentario con:", notif);
-      const li = document.createElement("li");
-      li.classList.add("list-group-item");
-      li.innerHTML = `
+    li.classList.add("list-group-item");
+
+  const verLink = document.createElement("a");
+  verLink.href = `/albumes/${notif.id_album}?img=${notif.ref_id}`;
+  verLink.textContent = "Ver imagen";
+  verLink.style = "color: red; font-weight: bold; text-decoration: underline;";
+  verLink.addEventListener("click", async () => {
+    try {
+      const res = await fetch(`/notificaciones/${notif.id_notificacion}/leida`, {
+        method: "POST"
+      });
+      if (res.ok) {
+        li.remove();
+        actualizarContador(-1);
+      }
+    } catch (err) {
+      console.error("Error al marcar como leída:", err);
+    }
+    // No usamos preventDefault para que el link siga navegando
+  });
+
+  li.innerHTML = `
     <span><strong>${notif.remitente}</strong> comentó en tu imagen:</span><br>
     <em>"${notif.extracto}"</em><br>
     <span><strong>Título:</strong> ${notif.titulo_imagen}</span><br>
-    <a href="/albumes/${notif.id_album}?img=${notif.ref_id}"style="color: red; font-weight: bold; text-decoration: underline;">Ver imagen</a>
-
-    <button class="btn-leer">Marcar como leída</button>
   `;
-      li.querySelector(".btn-leer").addEventListener("click", () => {
-        marcarComoLeida(notif.id_notificacion, li);
-      });
-      lista.prepend(li); 
-    }
-    // Agregar al panel
-    lista.prepend(li);
-    if (lista.children.length > 20) {
-      lista.removeChild(lista.lastChild);
-    }
-  }
 
+  li.appendChild(verLink);
+
+  // botón opcional si el usuario no hace clic en "ver"
+  const btn = document.createElement("button");
+  btn.textContent = "Marcar como leída";
+  btn.classList.add("btn-leer");
+  btn.addEventListener("click", () => {
+    marcarComoLeida(notif.id_notificacion, li);
+  });
+  //li.appendChild(document.createElement("br"));
+  li.appendChild(btn);
+
+  lista.prepend(li);
+  }
+}
   
   function responderSolicitud(
     id_usuario_remitente,
