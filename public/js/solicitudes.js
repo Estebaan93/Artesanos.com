@@ -40,9 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
         html += `<h4>👤 Usuarios</h4><ul>`;
         html += usuarios
           .map((u) => {
-            const avatarSrc= u.avatarUrl && u.avatarUrl.startsWith('http')
-              ? u.avatarUrl
-              : `/img/perfiles/${u.avatarUrl || 'default.png'}`;
+            const avatarSrc= (!u.avatarUrl || u.avatarUrl === 'default.png')
+              ? '/img/perfiles/default.png'
+              : u.avatarUrl;
 
             const avatar = `
               <img src="${avatarSrc || '/img/perfiles/default.png'}"

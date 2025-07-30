@@ -231,9 +231,9 @@ document.addEventListener("DOMContentLoaded", () => {
             (amigo) => `
           <li style="margin: 10px 0;">
             <img src="${
-              amigo.avatarUrl?.startsWith("http")
-                ? amigo.avatarUrl
-                : `/img/perfiles/${amigo.avatarUrl || "default.png"}`
+              (!amigo.avatarUrl || amigo.avatarUrl === 'default.png')
+                ? '/img/perfiles/default.png'
+                : amigo.avatarUrl
             }" 
                  style="width: 40px; height: 40px; border-radius: 50%; vertical-align: middle; margin-right: 8px;">
             ${amigo.nombre} ${amigo.apellido}
