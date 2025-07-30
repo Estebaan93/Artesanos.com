@@ -1,9 +1,10 @@
+//-views/perfil/perfil.pug
 extends ../layouts/logueado
 
 block content
   link(rel="stylesheet", href="/css/perfil.css")
   script(src="/js/editarPerfil.js")
-    - const avatarSrc = usuario.avatarUrl?.startsWith('http')? usuario.avatarUrl: `/img/perfiles/${usuario.avatarUrl || 'default.png'}`
+    - const avatarSrc = (!usuario.avatarUrl || usuario.avatarUrl === '') ? '/img/perfiles/default.png' : (usuario.avatarUrl.startsWith('http') ? usuario.avatarUrl : usuario.avatarUrl)
   .perfil-container
     button.cerrar(type="button", aria-label="Cerrar", onclick="window.location.href='/home'") ×
     .perfil-header

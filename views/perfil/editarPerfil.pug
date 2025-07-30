@@ -1,13 +1,14 @@
+//-views/perfil/editarPerfil.pug
 doctype html
 html(lang="es")
   head
     meta(charset="UTF-8")
-    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title Editar Perfil
     link(rel="stylesheet", href="/css/editarPerfil.css")
     script.
       const opcionesFormacion = !{JSON.stringify(opcionesFormacion)};
-    script(src="/js/editarPerfil.js" defer)
+    script(src="/js/editarPerfil.js")
 
   body
     h1 ARTESANOS.COM
@@ -15,7 +16,7 @@ html(lang="es")
       button.cerrar(type="button", aria-label="Cerrar", onclick="window.location.href='/home'") ×
       h2 Editar perfil
 
-      form(action="/perfil/editar", method="post" id="formEditarPerfil")
+      form(action="/perfil/editar", method="post", id="formEditarPerfil", enctype="multipart/form-data")
         label(for="nombre") Nombre:
         input#nombre(type="text", name="nombre", required, value=usuario.nombre)
 
@@ -25,39 +26,51 @@ html(lang="es")
         label(for="email") Email:
         input#email(type="email", name="email", required, value=usuario.email)
 
-        label(for="avatarUrl") URL Avatar:
-        input#avatarUrl(type="text", name="avatarUrl", value=usuario.avatarUrl)
+        label(for="avatar") Actualizar foto de perfil:
+        input#avatarUrl(type="file", name="avatar", accept="image/*")
 
         hr
 
         h3 Formaciones
-
         #contenedorFormaciones
           each formacion, i in formacionesUsuario
             - const fechaFormateada = new Date(formacion.fecha).toISOString().slice(0, 10)
             .formacion-item(data-index=i)
-              label(for=`formaciones[${i}][tipo]`) Formación:
+              label Formación:
               select(name=`formaciones[${i}][tipo]`, required)
                 option(value="") -- Seleccione una formación --
                 each tipo in opcionesFormacion
-                  if tipo === formacion.tipo_formacion
-                    option(value=tipo selected) #{tipo}
-                  else
-                    option(value=tipo) #{tipo}
+                  option(value=tipo selected=(tipo === formacion.tipo_formacion)) #{tipo}
 
-              label(for=`formaciones[${i}][fecha]`) Fecha:
-              input(type="date", name=`formaciones[${i}][fecha]`, required, value=fechaFormateada)
+              label Fecha:
+              input(type="date", name=`formaciones[${i}][fecha]`, value=fechaFormateada, required)
 
-              label(for=`formaciones[${i}][institucion]`) Institución:
-              input(type="text", name=`formaciones[${i}][institucion]`, required, value=formacion.institucion)
+              label Institución:
+              input(type="text", name=`formaciones[${i}][institucion]`, value=formacion.institucion, required)
 
-              label(for=`formaciones[${i}][descripcion]`) Descripción:
+              label Descripción:
               textarea(name=`formaciones[${i}][descripcion]`) #{formacion.descripcion}
 
               button(type="button", class="btn-eliminar-formacion") Eliminar
-              
+
         button(type="button", id="btnAgregarFormacion") + Agregar formación
 
         hr
-
+        button(type="button", id="btnAbrirModal", class="btn-accion") Cambiar contraseña
+        hr
         button(type="submit") Guardar cambios
+
+        // Modal de contraseña (dentro del form, pero oculto al principio)
+        #modalPassword
+          .modal-contenidoPerfil
+            span.cerrar-modalPerfil(onclick="cerrarModal()") ×
+            h3 Cambiar contraseña
+            .campo
+              label Contraseña actual:
+              input(type="password", name="passwordActual", id="passwordActual", placeholder="Contraseña actual", autocomplete="off")
+            .campo
+              label Nueva contraseña:
+              input(type="password", name="nuevaPassword", id="nuevaPassword", placeholder="Nueva contraseña")
+            .campo
+              label Confirmar nueva contraseña:
+              input(type="password", name="confirmarPassword", id="confirmarPassword", placeholder="Confirmar contraseña")

@@ -1,3 +1,4 @@
+//models/perfilModel.js
 import pool from '../config/db.js';
 
 export const obtenerDatosUsuario = async (id_usuario) => {
@@ -41,27 +42,28 @@ export const obtenerInteresesUsuario = async (id_usuario) => {
  *  - formaciones: array de objetos con tipo, fecha, institucion, descripcion
  */
 export const actualizarDatosUsuario = async (id_usuario, datos) => {
-  const { nombre, apellido, email, avatarUrl, formaciones } = datos;
+  const { nombre, apellido, email, avatarUrl, formaciones, password } = datos;
 
-  // Actualizar datos del usuario
+  const campos = ['nombre = ?', 'apellido = ?', 'email = ?', 'avatarUrl = ?'];
+  const valores = [nombre, apellido, email, avatarUrl];
+
+  if (password) {
+    campos.push('password = ?');
+    valores.push(password);
+  }
+
+  valores.push(id_usuario); // para el WHERE
+
   await pool.query(
-    `UPDATE usuario 
-     SET nombre = ?, apellido = ?, email = ?, avatarUrl = ?
-     WHERE id_usuario = ?`,
-    [nombre, apellido, email, avatarUrl, id_usuario]
+    `UPDATE usuario SET ${campos.join(', ')} WHERE id_usuario = ?`,
+    valores
   );
 
-  // Eliminar formaciones anteriores
-  await pool.query(
-    'DELETE FROM usuario_formacion WHERE id_usuario = ?',
-    [id_usuario]
-  );
+  await pool.query('DELETE FROM usuario_formacion WHERE id_usuario = ?', [id_usuario]);
 
-  // Insertar nuevas formaciones (si las hay)
   for (const f of formaciones) {
     const { tipo, fecha, institucion, descripcion } = f;
 
-    // Obtener id_formacion a partir del tipo
     const [formacionRows] = await pool.query(
       'SELECT id_formacion FROM formacion WHERE tipo = ?',
       [tipo]
@@ -73,7 +75,6 @@ export const actualizarDatosUsuario = async (id_usuario, datos) => {
 
     const id_formacion = formacionRows[0].id_formacion;
 
-    // Insertar nueva formación
     await pool.query(
       `INSERT INTO usuario_formacion 
         (id_usuario, id_formacion, fecha, institucion, descripcion)

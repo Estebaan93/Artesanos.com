@@ -34,7 +34,7 @@ html
         //Menu desplegable
         .perfil-dropdown
           .avatar-container
-            - const avatar = usuario.avatarUrl?.startsWith('http') ? usuario.avatarUrl : `/img/perfiles/${usuario.avatarUrl || 'default.png'}`
+            - const avatar = usuario.avatarUrl?.startsWith('http') ? usuario.avatarUrl : `${usuario.avatarUrl || 'default.png'}`
             a(href="/perfil")
               img.avatar(src=avatar alt="avatar")
             ul.menu

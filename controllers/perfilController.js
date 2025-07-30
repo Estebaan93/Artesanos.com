@@ -1,9 +1,19 @@
-import {obtenerDatosUsuario, obtenerFormacionesUsuario, obtenerInteresesUsuario, actualizarDatosUsuario} from '../models/perfilModel.js';
+//controllers/perfilController.js
+import {
+  obtenerDatosUsuario,
+  obtenerFormacionesUsuario,
+  obtenerInteresesUsuario,
+  actualizarDatosUsuario
+} from '../models/perfilModel.js';
+
+import bcrypt from 'bcryptjs';
+import fs from 'fs';
+import path from 'path';
 
 export const verPerfil = async (req, res) => {
   try {
     const id_usuario = req.session.usuario?.id_usuario;
-    if (!id_usuario) return res.redirect('/login');
+    if (!id_usuario) return res.redirect('/');
 
     const usuario = await obtenerDatosUsuario(id_usuario);
     const formaciones = await obtenerFormacionesUsuario(id_usuario);
@@ -23,12 +33,11 @@ export const verPerfil = async (req, res) => {
 export const mostrarEditarPerfil = async (req, res) => {
   try {
     const id_usuario = req.session.usuario?.id_usuario;
-    if (!id_usuario) return res.redirect('/login');
+    if (!id_usuario) return res.redirect('/');
 
     const usuario = await obtenerDatosUsuario(id_usuario);
     const formacionesUsuario = await obtenerFormacionesUsuario(id_usuario);
 
-    // Opciones fijas para el select de formación
     const opcionesFormacion = [
       'Carpintería',
       'Alfarería',
@@ -43,7 +52,7 @@ export const mostrarEditarPerfil = async (req, res) => {
     res.render('perfil/editarPerfil', {
       usuario,
       opcionesFormacion,
-      formacionesUsuario // enviamos todas las formaciones para que se editen
+      formacionesUsuario
     });
   } catch (error) {
     console.error('Error al mostrar formulario de edición:', error);
@@ -54,15 +63,18 @@ export const mostrarEditarPerfil = async (req, res) => {
 export const actualizarPerfil = async (req, res) => {
   try {
     const id_usuario = req.session.usuario?.id_usuario;
-    if (!id_usuario) return res.redirect('/login');
+    if (!id_usuario) return res.redirect('/');
 
-    const { nombre, apellido, email, avatarUrl } = req.body;
+    const {
+      nombre,
+      apellido,
+      email,
+      passwordActual,
+      nuevaPassword,
+      confirmarPassword
+    } = req.body;
 
-    // Recibimos formaciones como JSON (por ejemplo con un input hidden o por JS)
-    // Si vienen desde inputs con nombre formaciones[0][tipo] etc, express lo parsea directo como objeto/array
     let formaciones = req.body.formaciones;
-
-    // Si es string JSON, parsear, si no, asumir objeto/array
     if (typeof formaciones === 'string') {
       try {
         formaciones = JSON.parse(formaciones);
@@ -70,13 +82,68 @@ export const actualizarPerfil = async (req, res) => {
         formaciones = [];
       }
     }
+    if (!Array.isArray(formaciones)) formaciones = [];
 
-    // Asegurar que formaciones es array
-    if (!Array.isArray(formaciones)) {
-      formaciones = [];
+    const usuarioBD = await obtenerDatosUsuario(id_usuario);
+    let passwordHasheada = null;
+
+    // VALIDACIÓN CAMBIO DE CONTRASEÑA
+    const actualVal = (passwordActual || '').trim();
+    const nuevaVal = (nuevaPassword || '').trim();
+    const confirmarVal = (confirmarPassword || '').trim();
+
+    // Solo validar si alguno tiene valor distinto de vacío
+    const quiereCambiarPassword = actualVal !== '' || nuevaVal !== '' || confirmarVal !== ''; 
+
+    if (quiereCambiarPassword) {
+      if (!actualVal || !nuevaVal || !confirmarVal) {
+        return res.status(400).send("Debes completar todos los campos de contraseña.");
+      }
+
+      const coincide = await bcrypt.compare(actualVal, usuarioBD.password);
+      if (!coincide) {
+        return res.status(400).send("La contraseña actual es incorrecta.");
+      }
+
+      if (nuevaVal !== confirmarVal) {
+        return res.status(400).send("La nueva contraseña y su confirmación no coinciden.");
+      }
+
+      if (nuevaVal.length < 3) {
+        return res.status(400).send("La nueva contraseña debe tener al menos 3 caracteres.");
+      }
+
+      passwordHasheada = await bcrypt.hash(nuevaVal, 10);
     }
 
-    await actualizarDatosUsuario(id_usuario, { nombre, apellido, email, avatarUrl, formaciones });
+    // ACTUALIZAR AVATAR (si se subió uno nuevo)
+    let avatarUrlFinal = usuarioBD.avatarUrl;
+    const archivoAvatar = req.file;
+
+    if (archivoAvatar) {
+      avatarUrlFinal = `/img/perfiles/${archivoAvatar.filename}`;
+      if (usuarioBD.avatarUrl && usuarioBD.avatarUrl.startsWith('/img/perfiles/')) {
+        const rutaAnterior = path.join('public', usuarioBD.avatarUrl);
+        if (fs.existsSync(rutaAnterior)) {
+          fs.unlinkSync(rutaAnterior);
+        }
+      }
+    }
+
+    // ARMAR OBJETO DE ACTUALIZACIÓN
+    const datosActualizados = {
+      nombre,
+      apellido,
+      email,
+      avatarUrl: avatarUrlFinal,
+      formaciones
+    };
+
+    if (passwordHasheada) {
+      datosActualizados.password = passwordHasheada;
+    }
+
+    await actualizarDatosUsuario(id_usuario, datosActualizados);
 
     res.redirect('/perfil');
   } catch (error) {

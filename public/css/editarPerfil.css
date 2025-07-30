@@ -1,3 +1,4 @@
+/*public/css/editarPerfil.css*/
 /* Fuente y fondo */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -208,4 +209,70 @@ button[type="submit"] {
 }
 button[type="submit"]:hover {
   background-color: #6647b0;
+}
+
+
+
+/* Modal oculto por defecto */
+#modalPassword {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Cuando se abre el modal */
+#modalPassword.visible {
+  display: flex;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Contenido del modal */
+.modal-contenidoPerfil {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+/* Botón para cerrar */
+.cerrar-modalPerfil {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Botón de abrir modal */
+.btn-accion {
+  background-color: #6a4bc9;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: block;
+  margin: 1rem auto;
+}
+
+.btn-accion:hover {
+  background-color: #4c33a5;
 }
