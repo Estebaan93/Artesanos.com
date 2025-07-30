@@ -150,6 +150,7 @@ if (archivoAvatar) {
     }
 
     await actualizarDatosUsuario(id_usuario, datosActualizados);
+    req.session.usuario.avatarUrl= avatarUrlFinal;
 
     res.redirect('/perfil');
   } catch (error) {
