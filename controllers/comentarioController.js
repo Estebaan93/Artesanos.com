@@ -42,7 +42,7 @@ export const crearComentario = async (req, res) => {
 
     // 3. Si el comentarista NO es el autor, crear y emitir notificación
     if (id_autor !== id_usuario) {
-      await insertarNotificacionContenido({ id_comentario });
+      const id_notificacion= await insertarNotificacionContenido({ id_comentario });
 
       // Obtener datos necesarios para notificación en tiempo real
       const [[{ nombre: remitente }]] = await pool.query(
@@ -58,6 +58,7 @@ export const crearComentario = async (req, res) => {
       const extracto = descripcion.trim().slice(0, 100);
 
       emitirNotificacion(id_autor, {
+        id_notificacion,
         tipo: 'comentario',
         id_album,
         ref_id: id_imagen,

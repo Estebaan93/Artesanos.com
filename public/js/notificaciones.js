@@ -85,7 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
   verLink.href = `/albumes/${notif.id_album}?img=${notif.ref_id}`;
   verLink.textContent = "Ver imagen";
   verLink.style = "color: red; font-weight: bold; text-decoration: underline;";
-  verLink.addEventListener("click", async () => {
+  verLink.addEventListener("click", async (e) => {
+    e.preventDefault();//evitamos que navegue inmediatamente
     try {
       const res = await fetch(`/notificaciones/${notif.id_notificacion}/leida`, {
         method: "POST"
@@ -98,6 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Error al marcar como leída:", err);
     }
     // No usamos preventDefault para que el link siga navegando
+    window.location.href= verLink.href;
   });
 
   li.innerHTML = `
