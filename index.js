@@ -57,7 +57,11 @@ io.on('connection',(socket)=>{
 export function emitirNotificacion(userId, payload) {
   const socketId = onlineUsers.get(userId);
   if (socketId) {
+    console.log("Enviando notificación a:", userId, "->", socketId);
+    console.log("Payload:", payload);
     io.to(socketId).emit('nuevaNotificacion', payload);
+  }else{
+    console.log("Usuario no conectado:", userId);
   }
 }
 

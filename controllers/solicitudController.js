@@ -1,8 +1,7 @@
 // controllers/solicitudController.js
 import {insertarSolicitudAmistad, actualizarSolicitudAmistadPorId, obtenerUsuariosDeSolicitud, obtenerEstadoAmistad} from "../models/solicitudModel.js";
-
-import { insertarNotificacionAmistad } from "../models/notificacionModel.js";
-import { emitirNotificacion } from "../index.js";
+import {insertarNotificacionAmistad } from "../models/notificacionModel.js";
+import {emitirNotificacion } from "../index.js";
 
 //creo solicitud
 export const crearSolicitudAmistad = async (req, res) => {
@@ -30,14 +29,18 @@ export const crearSolicitudAmistad = async (req, res) => {
       accion: "pendiente",
     });
 
-    await insertarNotificacionAmistad({
+    const id_notificacion= await insertarNotificacionAmistad({
       id_solicitud,
       id_usuario: id_destinatario,
+      tipo: "amistad"
     });
 
     emitirNotificacion(id_destinatario, {
       tipo: "amistad",
-      mensaje: `Nueva solicitud de amistad de ${req.session.usuario.nombre}`,
+      id_notificacion,
+      //mensaje: `Nueva solicitud de amistad de ${req.session.usuario.nombre}`,
+      remitente: req.session.usuario.nombre,
+      remitente_id: req.session.usuario.id_usuario,  
       solicitudId: id_solicitud,
     });
 
@@ -77,7 +80,7 @@ export const responderSolicitudAmistad = async (req, res) => {
     const { id_usuario: id_remitente, id_destinatario } = usuarios;
 
     if (accion === "aceptar") {
-      await insertarNotificacionAmistad({
+      const id_notificacion= await insertarNotificacionAmistad({
         id_solicitud,
         id_usuario: id_remitente,
         tipo: "aceptacion",
@@ -88,8 +91,9 @@ export const responderSolicitudAmistad = async (req, res) => {
 
       emitirNotificacion(id_remitente, {
         tipo: "aceptacion",
+        id_notificacion,
         remitente: nombreAceptador,
-        mensaje: `${nombreAceptador} ha aceptado tu solicitud de amistad.`,
+        mensaje: `${id_solicitud} ha aceptado tu solicitud de amistad.`,
       });
      
     }

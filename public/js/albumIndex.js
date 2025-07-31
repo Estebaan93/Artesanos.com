@@ -1,7 +1,7 @@
 // public/js/albumIndex.js
 
 document.addEventListener("DOMContentLoaded", () => {
-  // --- Cierre modal de crear álbum ---
+  // --- Cierre modal de crear album ---
   const cerrarBtn = document.getElementById('cerrar-modal');
   const fondo = document.querySelector('.div-fondo');
   if (cerrarBtn && fondo) {
@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Función para eliminar álbum vía fetch (DELETE)
+  // Función para eliminar album vía fetch (DELETE)
   const eliminarAlbum = async (idAlbum, cardElement) => {
     if (
       !confirm(
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Agregar botón eliminar a cada tarjeta y evento click
+  // Agregar boton eliminar a cada tarjeta y evento click
   document.querySelectorAll(".album-card").forEach((card) => {
     const tipoAlbum= card.getAttribute("data-tipo"); 
     if(tipoAlbum !=="fisico") return; //Solo albumes fisicos (propios)

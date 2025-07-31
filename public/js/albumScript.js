@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (e.target === modal) modal.style.display = 'none';
   });
 
-  // NUEVO: Manejar envío de comentarios desde cada formulario
+  // NUEVO: Manejar envio de comentarios desde cada formulario
   document.querySelectorAll('form.form-comentario').forEach(form => {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();

@@ -33,8 +33,8 @@ export const obtenerInteresesUsuario = async (id_usuario) => {
 
 /**
  * Actualiza los datos del usuario y reemplaza todas sus formaciones
- * @param {number} id_usuario 
- * @param {Object} datos 
+ * id_usuario 
+ *  datos 
  *  - nombre
  *  - apellido
  *  - email

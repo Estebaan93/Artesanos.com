@@ -101,7 +101,7 @@ import { uploadPerfil } from '../middlewares/upload.js';
 import { mostrarEstadisticasPerfil } from '../controllers/estadisticaController.js';
 import { obtenerAmigosPorUsuario, eliminarAmistad } from '../models/amistadModel.js';
 import { mostrarHome } from '../controllers/eventoController.js';
-import {homeLogueado} from '../controllers/homeController.js';
+import { homeLogueado} from '../controllers/homeController.js';
 
 const router = express.Router();
 
