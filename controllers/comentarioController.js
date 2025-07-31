@@ -34,40 +34,42 @@ export const crearComentario = async (req, res) => {
       descripcion: descripcion.trim()
     });
 
-    // 2. Insertar notificación al autor de la imagen
-    /*await insertarNotificacionContenido({ id_comentario });*/
+    // 2. Obtener autor de la imagen
     const [[{ id_usuario: id_autor }]] = await pool.query(
-  'SELECT a.id_usuario FROM imagen i JOIN album a ON i.id_album = a.id_album WHERE i.id_imagen = ?',
-  [id_imagen]
-);
-
-    // 3. Obtener el dueño de la imagen para notificar
-    /*const [[{ id_usuario: id_autor }]] = await pool.query(
       'SELECT a.id_usuario FROM imagen i JOIN album a ON i.id_album = a.id_album WHERE i.id_imagen = ?',
       [id_imagen]
-    );*/
-    // 3. Solo insertar notificación si el comentarista no es el autor
-  if (id_autor !== id_usuario) {
-  // Insertar notificación
-  await insertarNotificacionContenido({ id_comentario });
-  // Emitir push si el autor está conectado
-  emitirNotificacion(id_autor, {
-    tipo: 'comentario',
-    mensaje: `Nuevo comentario en tu imagen`,
-    ref_id: id_imagen
-  });
-}
-    
-    // 4. Emitir notificación si el autor está conectado
+    );
+
+    // 3. Si el comentarista NO es el autor, crear y emitir notificación
     if (id_autor !== id_usuario) {
+      const id_notificacion= await insertarNotificacionContenido({ id_comentario });
+
+      // Obtener datos necesarios para notificación en tiempo real
+      const [[{ nombre: remitente }]] = await pool.query(
+        'SELECT nombre FROM usuario WHERE id_usuario = ?',
+        [id_usuario]
+      );
+
+      const [[{ titulo, id_album }]] = await pool.query(
+        'SELECT titulo, id_album FROM imagen WHERE id_imagen = ?',
+        [id_imagen]
+      );
+
+      const extracto = descripcion.trim().slice(0, 100);
+
       emitirNotificacion(id_autor, {
+        id_notificacion,
         tipo: 'comentario',
-        mensaje: `Nuevo comentario en tu imagen`,
-        ref_id: id_imagen
+        id_album,
+        ref_id: id_imagen,
+        remitente,
+        titulo_imagen: titulo,
+        extracto
       });
     }
 
     res.json({ ok: true, id_comentario });
+
   } catch (err) {
     console.error('Error en notificación de comentario:', err);
     res.status(500).json({ error: "No se pudo agregar el comentario" });
