@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     socket.emit("register", usuarioId);
 
     socket.on("nuevaNotificacion", (data) => {
+      console.log("🔔 Notificación recibida:", data);
       agregarNotificacionAlPanel(data);
       actualizarContador(1);
     });
@@ -58,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const li = document.createElement("li");
 
     if (notif.tipo === "amistad") {
-      li.innerHTML = `
+      /*li.innerHTML = `
       <span>Solicitud de amistad de <strong>${notif.remitente}</strong></span><br>
       <button class="btn-aceptar">Aceptar</button>
       <button class="btn-rechazar">Rechazar</button>
@@ -68,16 +69,57 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       li.querySelector(".btn-rechazar").addEventListener("click", () => {
         responderSolicitud(notif.remitente_id, notif.ref_id, "rechazar", li);
-      });
+      });*/
+       li.classList.add("list-group-item");
+
+  const mensaje = document.createElement("span");
+  mensaje.innerHTML = `Solicitud de amistad de <strong>${notif.remitente}</strong>`;
+  li.appendChild(mensaje);
+  li.appendChild(document.createElement("br"));
+
+  const btnAceptar = document.createElement("button");
+  btnAceptar.textContent = "Aceptar";
+  btnAceptar.classList.add("btn-aceptar");
+  btnAceptar.addEventListener("click", () => {
+    responderSolicitud(notif.remitente_id, notif.ref_id, "aceptar", li);
+  });
+
+  const btnRechazar = document.createElement("button");
+  btnRechazar.textContent = "Rechazar";
+  btnRechazar.classList.add("btn-rechazar");
+  btnRechazar.style.marginLeft = "5px";
+  btnRechazar.addEventListener("click", () => {
+    responderSolicitud(notif.remitente_id, notif.ref_id, "rechazar", li);
+  });
+
+  li.appendChild(btnAceptar);
+  li.appendChild(btnRechazar);
+  lista.prepend(li);
     } else if (notif.tipo === "aceptacion") {
-      li.innerHTML = `
+      /*li.innerHTML = `
       <span><strong>${notif.remitente}</strong> aceptó tu solicitud de amistad.</span>
       <button class="btn-leer">Marcar como leída</button>
     `;
       li.querySelector(".btn-leer").addEventListener("click", () => {
         console.log("Noti al marcar como leída:", notif);
         marcarComoLeida(notif.id_notificacion, li);
-      });
+      });*/
+        li.classList.add("list-group-item");
+
+  const mensaje = document.createElement("span");
+  mensaje.innerHTML = `<strong>${notif.remitente}</strong> aceptó tu solicitud de amistad.`;
+  li.appendChild(mensaje);
+  li.appendChild(document.createElement("br"));
+
+  const btnLeer = document.createElement("button");
+  btnLeer.textContent = "Marcar como leída";
+  btnLeer.classList.add("btn-leer");
+  btnLeer.addEventListener("click", () => {
+    marcarComoLeida(notif.id_notificacion, li);
+  });
+
+  li.appendChild(btnLeer);
+  lista.prepend(li);
     } else if (notif.tipo === "comentario") {
     li.classList.add("list-group-item");
 
