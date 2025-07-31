@@ -24,9 +24,13 @@ export const crearSolicitud = async (req, res) => {
 
     // Emitir notificación real-time al destinatario
     emitirNotificacion(id_destinatario, {
-      tipo: 'amistad',
+      /*tipo: 'amistad',
       mensaje: `Nueva solicitud de amistad de ${req.session.usuario.nombre}`,
-      solicitudId
+      solicitudId*/
+      tipo: 'amistad',
+      remitente: req.session.usuario.nombre,
+      remitente_id: id_usuario,
+      ref_id: solicitudId
     });
 
     res.json({ ok: true, mensaje: 'Solicitud enviada' });
