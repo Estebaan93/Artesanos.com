@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const contenedor = document.getElementById('contenedorFormaciones');
   const btnAgregar = document.getElementById('btnAgregarFormacion');
 
-  // Agregar formación
+  // Agregar formacion
   btnAgregar.addEventListener('click', () => {
     const index = contenedor.children.length;
     const div = document.createElement('div');

@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Manejar botón cancelar inscripción
+// Manejar boton cancelar inscripcion
   const botonesCancelar = document.querySelectorAll('.btnCancelarInscripcion');
   botonesCancelar.forEach(btn => {
     btn.addEventListener('click', () => {

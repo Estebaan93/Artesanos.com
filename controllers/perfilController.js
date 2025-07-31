@@ -1,10 +1,5 @@
 //controllers/perfilController.js
-import {
-  obtenerDatosUsuario,
-  obtenerFormacionesUsuario,
-  obtenerInteresesUsuario,
-  actualizarDatosUsuario
-} from '../models/perfilModel.js';
+import { obtenerDatosUsuario, obtenerFormacionesUsuario, obtenerInteresesUsuario, actualizarDatosUsuario} from '../models/perfilModel.js';
 
 import bcrypt from 'bcryptjs';
 import fs from 'fs';

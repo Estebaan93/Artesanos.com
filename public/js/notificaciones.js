@@ -15,10 +15,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (usuarioId) {
+    console.log("Registrando socket para usuario:", usuarioId);
     socket.emit("register", usuarioId);
 
     socket.on("nuevaNotificacion", (data) => {
-      console.log("🔔 Notificación recibida:", data);
+      console.log("Notificación recibida:", data);
       agregarNotificacionAlPanel(data);
       actualizarContador(1);
     });
@@ -205,6 +206,10 @@ document.addEventListener("DOMContentLoaded", () => {
           Swal.fire("Listo", "Notificación marcada como leída", "success");
           elementoLi.remove();
           actualizarContador(-1);
+          //Verificamos si ya no quedan noti
+          if(lista.children.length===0){
+            mostrarMensajeSinNotificaciones();
+          }
         } else {
           Swal.fire("Error", "No se pudo marcar como leída", "error");
         }

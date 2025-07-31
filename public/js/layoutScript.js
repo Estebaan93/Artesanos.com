@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginForm = modalLogin ? modalLogin.querySelector("form") : null;
   const registerForm = document.getElementById("form-registro");
 
-    // -------- BOTÓN SCROLL TO TOP --------
+    // -------- BOTON SCROLL TO TOP --------
   const scrollBtn = document.getElementById("scrollTopBtn");
   if (scrollBtn) {
     window.addEventListener("scroll", () => {
@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // -------- PROTECCIÓN DE RUTAS CON JWT --------
+  // -------- PROTECCION DE RUTAS CON JWT --------
   const token = localStorage.getItem("token");
   if (token) {
     fetch("/home", {
@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch((err) => console.error("Error de autenticación:", err));
   }
 
-  // -------- LOGOUT con confirmación --------
+  // -------- LOGOUT con confirmacion --------
   const btnLogout = document.getElementById("btn-logout");
   if (btnLogout) {
     btnLogout.addEventListener("click", async (e) => {
