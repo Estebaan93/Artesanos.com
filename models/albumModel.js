@@ -72,14 +72,14 @@ export const eliminarAlbumPorId = async (id_album) => {
     [id_album]
   );
 
-  //Cambiar estado de imágenes de ese álbum
+  //Cambiar estado de imagenes de ese álbum
     await pool.query(
     "UPDATE imagen SET estado = 0 WHERE id_album = ?",
     [id_album]
   );
 
-  // Eliminar comentarios y notificaciones asociadas a las imágenes de ese álbum
-  // 1. Obtener IDs de las imágenes del álbum
+  // Eliminar comentarios y notificaciones asociadas a las imágenes de ese album
+  // 1. Obtener IDs de las imagenes del álbum
   const [imagenes] = await pool.query(
     "SELECT id_imagen FROM imagen WHERE id_album = ?",
     [id_album]
