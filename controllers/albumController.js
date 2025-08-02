@@ -1,6 +1,6 @@
-import { crearAlbum, obtenerAlbumDeUsuario, obtenerAlbumPorId, eliminarAlbumPorId , obtenerAlbumesEliminados , restaurarAlbumPorId  } from '../models/albumModel.js';
-import {obtenerImagenesVisiblesPorUsuario,obtenerImagenesVisibles, obtenerEtiquetasPorImagen, obtenerImagenesEliminadas } from '../models/imagenModel.js';
-import { obtenerUsuarioPorId ,  obtenerAmigosPorUsuario  } from '../models/usuarioModel.js';
+import {crearAlbum, obtenerAlbumDeUsuario, obtenerAlbumPorId, eliminarAlbumPorId , obtenerAlbumesEliminados , restaurarAlbumPorId} from '../models/albumModel.js';
+import {obtenerImagenesVisiblesPorUsuario, obtenerImagenesVisibles, obtenerEtiquetasPorImagen, obtenerImagenesEliminadas} from '../models/imagenModel.js';
+import {obtenerUsuarioPorId, obtenerAmigosPorUsuario} from '../models/usuarioModel.js';
 
 
 export const listarAlbumes = async (req, res) => {
